@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="tr" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <title>E-ticaret Yönetim Paneli</title>
+    <style>
+      :root {
+        --ecommerce-orange: #F97316;
+        --ecommerce-orange-light: #FB923C;
+        --ecommerce-orange-dark: #EA580C;
+        --ecommerce-orange-fade: rgba(249, 115, 22, 0.1);
+        
+        --light-bg: #FFFFFF;
+        --light-card: #F8FAFC;
+        --light-border: #E2E8F0;
+        --light-text: #0F172A;
+        --light-text-muted: #64748B;
+        --light-primary: var(--ecommerce-orange);
+        --light-primary-bg: #FFF7ED;
+        --light-accent: #F1F5F9;
+        
+        --dark-bg: #0F172A;
+        --dark-card: #1E293B;
+        --dark-card-hover: #334155;
+        --dark-border: #334155;
+        --dark-text: #F8FAFC;
+        --dark-text-muted: #94A3B8;
+        --dark-primary: #FB923C;
+        --dark-primary-hover: #F97316;
+        --dark-primary-bg: rgba(251, 146, 60, 0.2);
+        --dark-accent: #1E293B;
+      }
+
+      .light {
+        --bg: var(--light-bg);
+        --card: var(--light-card);
+        --border: var(--light-border);
+        --text: var(--light-text);
+        --text-muted: var(--light-text-muted);
+        --primary: var(--light-primary);
+        --primary-bg: var(--light-primary-bg);
+        --accent: var(--light-accent);
+      }
+
+      .dark {
+        --bg: var(--dark-bg);
+        --card: var(--dark-card);
+        --border: var(--dark-border);
+        --text: var(--dark-text);
+        --text-muted: var(--dark-text-muted);
+        --primary: var(--dark-primary);
+        --primary-bg: var(--dark-primary-bg);
+        --accent: var(--dark-accent);
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        font-weight: 400;
+      }
+
+      /* ===== Sidebar ===== */
+      .sidebar {
+        width: 240px;
+        background-color: var(--card);
+        border-right: 1px solid var(--border);
+        transition: all 0.3s ease;
+      }
+      
+      /* ===== Menü Stilleri ===== */
+      .menu-item {
+        display: flex;
+        align-items: center;
+        padding: 0.6rem 1.5rem;
+        color: var(--text-muted);
+        border-left: 2px solid transparent;
+        transition: all 0.2s;
+        margin: 0.25rem 0;
+        font-weight: 500;
+        font-size: 0.85rem;
+      }
+      
+      .menu-item:hover {
+        color: var(--text);
+        background-color: var(--bg);
+      }
+      
+      .menu-item.active {
+        color: var(--primary);
+        font-weight: 600;
+        border-left: 2px solid var(--primary);
+        background-color: var(--primary-bg);
+      }
+      
+      .icon-container {
+        width: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.8rem;
+      }
+      
+      .active .icon-container svg {
+        stroke: var(--primary);
+        stroke-width: 2.5px;
+      }
+      
+      .badge {
+        display: inline-flex;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: 20px;
+        text-align: center;
+        white-space: nowrap;
+        border-radius: 10px;
+        margin-left: auto;
+      }
+      
+      .badge-primary {
+        background-color: var(--primary);
+        color: white;
+      }
+      
+      .badge-gray {
+        background-color: var(--accent);
+        color: var(--text-muted);
+      }
+      
+      /* ===== Kategori ve Bölüm Stilleri ===== */
+      .category-title {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+      }
+      
+      /* ===== Arama Kutusu ===== */
+      .search-input {
+        width: 100%;
+        padding: 0.6rem 1rem 0.6rem 2.3rem;
+        background-color: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 0.4rem;
+        color: var(--text);
+        font-size: 0.75rem;
+        transition: all 0.2s;
+      }
+      
+      .search-input:focus {
+        outline: none;
+        border-color: var(--primary);
+      }
+      
+      .search-container {
+        position: relative;
+        padding: 0 1.5rem;
+      }
+      
+      .search-icon {
+        position: absolute;
+        left: 2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        transition: all 0.2s;
+      }
+      
+      /* ===== Tema Değiştirici ===== */
+      .theme-toggle {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 22px;
+      }
+      
+      .theme-toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      
+      .theme-toggle .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--border);
+        transition: .4s;
+        border-radius: 22px;
+      }
+      
+      .theme-toggle .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+      }
+      
+      .theme-toggle input:checked + .slider {
+        background-color: var(--primary);
+      }
+      
+      .theme-toggle input:checked + .slider:before {
+        transform: translateX(18px);
+      }
+      
+      /* ===== Kullanıcı Profili ===== */
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 0.25rem;
+        background-color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.75rem;
+      }
+      
+      /* ===== Notification Counter ===== */
+      .notification-counter {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background-color: var(--primary);
+        color: white;
+        font-size: 10px;
+        font-weight: 600;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      /* ===== Mobile Header ===== */
+      .mobile-header {
+        height: 60px;
+        background-color: var(--bg);
+        border-bottom: 1px solid var(--border);
+      }
+      
+      .mobile-menu-button {
+        width: 40px;
+        height: 40px;
+        border-radius: 0.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--card);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      
+      /* ===== Logo ===== */
+      .emarket-logo {
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border);
+      }
+      
+      .logo-icon {
+        width: 26px;
+        height: 26px;
+        background-color: var(--primary);
+        border-radius: 0.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.75rem;
+      }
+    </style>
+  </head>
+  <body class="flex flex-col md:flex-row">
+    <!-- Mobil Header -->
+    <header class="fixed top-0 left-0 right-0 z-30 md:hidden mobile-header flex items-center justify-between px-4">
+      <div class="flex items-center space-x-4">
+        <button id="mobile-menu-button" class="mobile-menu-button">
+          <i data-feather="menu" class="h-5 w-5"></i>
+        </button>
+        <div class="flex items-center">
+          <div class="logo-icon">
+            <i data-feather="shopping-bag" class="h-4 w-4 text-white"></i>
+          </div>
+          <span class="font-semibold text-base">E-Market</span>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        <div class="relative">
+          <button class="mobile-menu-button">
+            <i data-feather="bell" class="h-5 w-5"></i>
+          </button>
+          <span class="notification-counter">3</span>
+        </div>
+        
+        <label class="theme-toggle">
+          <input type="checkbox" id="mobile-theme-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </header>
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar fixed md:sticky top-0 left-0 bottom-0 -translate-x-full md:translate-x-0 z-40 transition-transform duration-300">
+      <!-- Logo -->
+      <div class="emarket-logo">
+        <div class="logo-icon">
+          <i data-feather="shopping-bag" class="h-4 w-4 text-white"></i>
+        </div>
+        E-Market
+      </div>
+      
+      <!-- Arama -->
+      <div class="search-container my-3">
+        <input type="text" class="search-input" placeholder="Ara...">
+        <i data-feather="search" class="search-icon h-3.5 w-3.5"></i>
+      </div>
+      
+      <!-- Ana Menü -->
+      <nav class="flex-1 overflow-y-auto">
+        <p class="category-title">Genel</p>
+        
+        <a href="#" class="menu-item active">
+          <div class="icon-container">
+            <i data-feather="grid" class="h-4 w-4"></i>
+          </div>
+          <span>Dashboard</span>
+        </a>
+        
+        <a href="#" class="menu-item">
+          <div class="icon-container">
+            <i data-feather="shopping-bag" class="h-4 w-4"></i>
+          </div>
+          <span>Ürünler</span>
+          <span class="badge badge-primary">328</span>
+        </a>
+        
+        <a href="#" class="menu-item">
+          <div class="icon-container">
+            <i data-feather="shopping-cart" class="h-4 w-4"></i>
+          </div>
+          <span>Siparişler</span>
+          <span class="badge badge-primary">14</span>
+        </a>
+        
+        <a href="#" class="menu-item">
+          <div class="icon-container">
+            <i data-feather="users" class="h-4 w-4"></i>
+          </div>
+          <span>Müşteriler</span>
+          <span class="badge badge-gray">852</span>
+        </a>
+        
+        <p class="category-title">Katalog</p>
+        
+        <a href="#" class="menu-item">
+          <div class="icon-container">
+            <i data-feather="tag" class="h-4 w-4"></i>
+          </div>
+          <span>Kategoriler</span>
+        </a>
+        
+        <a href="#" class="menu-item">
+          <div class="icon-container">
+            <i data-feather="package" class="h-4 w-4"></i>
+          </div>
+          <span>Markalar</span>
+        </a>
+        
+        <a href="#" class="menu-item">
+          <div class="icon-container">
+            <i data-feather="star" class="h-4 w-4"></i>
+          </div>
+          <span>Değerlendirmeler</span>
+          <span class="badge badge-primary">18</span>
+        </a>
+        
+        <p class="category-title">Pazarlama</p>
+        
+        <a href="#" class="menu-item">
+          <div class="icon-container">
+            <i data-feather="percent" class="h-4 w-4"></i>
+          </div>
+          <span>İndirimler</span>
+        </a>
+        
+        <a href="#" class="menu-item">
+          <div class="icon-container">
+            <i data-feather="mail" class="h-4 w-4"></i>
+          </div>
+          <span>E-posta Kampanyaları</span>
+        </a>
+        
+        <a href="#" class="menu-item">
+          <div class="icon-container">
+            <i data-feather="trending-up" class="h-4 w-4"></i>
+          </div>
+          <span>SEO Yönetimi</span>
+        </a>
+      </nav>
+      
+      <!-- Alt Menü - Ayarlar ve Kullanıcı -->
+      <div class="px-4 py-3 border-t border-[var(--border)]">
+        <a href="#" class="flex items-center px-2 py-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] rounded">
+          <i data-feather="settings" class="h-4 w-4 mr-3"></i>
+          <span>Ayarlar</span>
+        </a>
+        
+        <div class="mt-3 flex items-center justify-between">
+          <div class="flex items-center">
+            <div class="user-avatar">AY</div>
+            <div class="ml-3">
+              <p class="text-xs font-medium">Ayşe Yılmaz</p>
+              <p class="text-xs text-[var(--text-muted)]">Admin</p>
+            </div>
+          </div>
+          
+          <label class="theme-toggle">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Arkaplan overlay - sadece mobil -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden"></div>
+    
+    <!-- Ana içerik -->
+    <main class="flex-1 mt-[60px] md:mt-0">
+      <div class="p-4 md:p-6 max-w-7xl mx-auto">
+     İçerik
+      </div>
+    </main>
+    
+    <!-- Scripts -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        feather.replace();
+        
+        // Tema değiştirme
+        function toggleTheme() {
+          const html = document.documentElement;
+          if (html.classList.contains('dark')) {
+            html.classList.remove('dark');
+            html.classList.add('light');
+            localStorage.setItem('theme', 'light');
+          } else {
+            html.classList.remove('light');
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+          }
+        }
+        
+        // Tema tercihi
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+          document.documentElement.classList.remove('light');
+          document.documentElement.classList.add('dark');
+          document.getElementById('theme-toggle').checked = true;
+          document.getElementById('mobile-theme-toggle').checked = true;
+        }
+        
+        // Tema butonları
+        const themeToggle = document.getElementById('theme-toggle');
+        const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+        
+        themeToggle.addEventListener('change', toggleTheme);
+        mobileThemeToggle.addEventListener('change', toggleTheme);
+        
+        // Mobil menü
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        
+        mobileMenuButton.addEventListener('click', function() {
+          sidebar.classList.toggle('-translate-x-full');
+          overlay.classList.toggle('hidden');
+          document.body.classList.toggle('overflow-hidden');
+        });
+        
+        function closeSidebar() {
+          sidebar.classList.add('-translate-x-full');
+          overlay.classList.add('hidden');
+          document.body.classList.remove('overflow-hidden');
+        }
+        
+        overlay.addEventListener('click', closeSidebar);
+        
+        // Ekran boyutu kontrolü
+        window.addEventListener('resize', function() {
+          if (window.innerWidth >= 768) {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+          } else {
+            sidebar.classList.add('-translate-x-full');
+          }
+        });
+      });
+    </script>
+  </body>
+</html> 
