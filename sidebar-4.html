@@ -641,12 +641,14 @@
         <div class="user-profile-container">
           <div class="user-info">
             <div class="relative">
-              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="user-avatar">
+              <div class="user-avatar bg-[#004CC8] flex items-center justify-center text-white">
+                <span>BD</span>
+              </div>
               <span class="status-indicator"></span>
             </div>
             <div>
               <p class="text-xs font-medium">Berkay Derin</p>
-              <p class="text-[10px] text-[var(--text-muted)]">Satış Müdürü</p>
+              <p class="text-[10px] text-[var(--text-muted)]">Frontend Software Engineer</p>
             </div>
           </div>
           
@@ -678,9 +680,27 @@
     <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden md:hidden"></div>
     
     <!-- Main Content Area -->
-    <main class="flex-1 mt-14 md:mt-0 p-0">
-      <div class="text-center text-lg pt-12">
-        CRM İçeriği Buraya Gelecek
+    <main class="flex-1 mt-14 md:mt-0 p-4 md:p-6">
+      <!-- Geliştirici Kartı -->
+      <div class="p-6 bg-[var(--bg)] border border-[var(--border)] rounded-lg">
+        <div class="text-center md:text-left">
+          <h1 class="text-xl font-semibold mb-3">Berkay Derin</h1>
+          <p class="text-[var(--text-muted)] mb-6">Frontend Software Engineer</p>
+          <div class="flex flex-wrap justify-center md:justify-start gap-3">
+            <a href="mailto:derinberkay67@gmail.com" class="px-4 py-2 bg-[var(--sidebar-hover)] text-[var(--text)] rounded-md flex items-center hover:bg-[var(--crm-primary)/10] hover:text-[var(--crm-primary)] transition-colors">
+              <i data-feather="mail" class="h-4 w-4 mr-2"></i>
+              <span class="text-sm">İletişim</span>
+            </a>
+            <a href="https://github.com/berkayderin" target="_blank" class="px-4 py-2 bg-[var(--sidebar-hover)] text-[var(--text)] rounded-md flex items-center hover:bg-[var(--crm-primary)/10] hover:text-[var(--crm-primary)] transition-colors">
+              <i data-feather="github" class="h-4 w-4 mr-2"></i>
+              <span class="text-sm">GitHub</span>
+            </a>
+            <a href="https://berkayderin.com.tr" target="_blank" class="px-4 py-2 bg-[var(--sidebar-hover)] text-[var(--text)] rounded-md flex items-center hover:bg-[var(--crm-primary)/10] hover:text-[var(--crm-primary)] transition-colors">
+              <i data-feather="globe" class="h-4 w-4 mr-2"></i>
+              <span class="text-sm">Portfolio</span>
+            </a>
+          </div>
+        </div>
       </div>
     </main>
     

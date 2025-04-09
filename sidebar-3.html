@@ -67,6 +67,9 @@
       /* ===== Sidebar ===== */
       .sidebar {
         width: 240px;
+        height: 100vh; /* Ekran yüksekliğinin tamamını kaplar */
+        display: flex;
+        flex-direction: column;
         background-color: var(--card);
         border-right: 1px solid var(--border);
         transition: all 0.3s ease;
@@ -292,6 +295,45 @@
         justify-content: center;
         margin-right: 0.75rem;
       }
+
+      /* ===== Alt Menü Stilleri ===== */
+      .submenu {
+        margin-left: 2.3rem;
+        height: 0;
+        overflow: hidden;
+        transition: height 0.3s ease;
+      }
+
+      .submenu.open {
+        height: auto;
+      }
+
+      .submenu-item {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        color: var(--text-muted);
+        transition: all 0.2s;
+        font-weight: 400;
+        font-size: 0.8rem;
+      }
+
+      .submenu-item:hover {
+        color: var(--text);
+      }
+
+      .submenu-item.active {
+        color: var(--primary);
+        font-weight: 500;
+      }
+
+      .menu-arrow {
+        transition: transform 0.3s ease;
+      }
+
+      .menu-arrow.open {
+        transform: rotate(90deg);
+      }
     </style>
   </head>
   <body class="flex flex-col md:flex-row">
@@ -341,7 +383,7 @@
       </div>
       
       <!-- Ana Menü -->
-      <nav class="flex-1 overflow-y-auto">
+      <nav class="flex-1 overflow-y-auto h-full">
         <p class="category-title">Genel</p>
         
         <a href="#" class="menu-item active">
@@ -391,22 +433,49 @@
           <span>Markalar</span>
         </a>
         
-        <a href="#" class="menu-item">
+        <a href="#" class="menu-item has-submenu" data-submenu="reviews">
           <div class="icon-container">
             <i data-feather="star" class="h-4 w-4"></i>
           </div>
           <span>Değerlendirmeler</span>
           <span class="badge badge-primary">18</span>
+          <i data-feather="chevron-right" class="h-4 w-4 ml-auto menu-arrow"></i>
         </a>
+        
+        <div id="reviews-submenu" class="submenu">
+          <a href="#" class="submenu-item">
+            <span>Onay Bekleyenler</span>
+            <span class="badge badge-primary ml-auto">12</span>
+          </a>
+          <a href="#" class="submenu-item active">
+            <span>Onaylanmış</span>
+          </a>
+          <a href="#" class="submenu-item">
+            <span>Reddedilenler</span>
+          </a>
+        </div>
         
         <p class="category-title">Pazarlama</p>
         
-        <a href="#" class="menu-item">
+        <a href="#" class="menu-item has-submenu" data-submenu="discounts">
           <div class="icon-container">
             <i data-feather="percent" class="h-4 w-4"></i>
           </div>
           <span>İndirimler</span>
+          <i data-feather="chevron-right" class="h-4 w-4 ml-auto menu-arrow"></i>
         </a>
+        
+        <div id="discounts-submenu" class="submenu">
+          <a href="#" class="submenu-item">
+            <span>Kampanyalar</span>
+          </a>
+          <a href="#" class="submenu-item">
+            <span>Kuponlar</span>
+          </a>
+          <a href="#" class="submenu-item">
+            <span>Özel Teklifler</span>
+          </a>
+        </div>
         
         <a href="#" class="menu-item">
           <div class="icon-container">
@@ -432,10 +501,10 @@
         
         <div class="mt-3 flex items-center justify-between">
           <div class="flex items-center">
-            <div class="user-avatar">AY</div>
+            <div class="user-avatar">BD</div>
             <div class="ml-3">
-              <p class="text-xs font-medium">Ayşe Yılmaz</p>
-              <p class="text-xs text-[var(--text-muted)]">Admin</p>
+              <p class="text-xs font-medium">Berkay Derin</p>
+              <p class="text-xs text-[var(--text-muted)]">Frontend Software Engineer</p>
             </div>
           </div>
           
@@ -453,7 +522,27 @@
     <!-- Ana içerik -->
     <main class="flex-1 mt-[60px] md:mt-0">
       <div class="p-4 md:p-6 max-w-7xl mx-auto">
-     İçerik
+        <!-- Geliştirici Kartı -->
+        <div class="p-6 bg-[var(--card)] border border-[var(--border)] rounded-md">
+          <div class="text-center md:text-left">
+            <h1 class="text-xl font-bold mb-3">Berkay Derin</h1>
+            <p class="text-[var(--text-muted)] mb-6">Frontend Software Engineer</p>
+            <div class="flex flex-wrap justify-center md:justify-start gap-3">
+              <a href="mailto:derinberkay67@gmail.com" class="px-4 py-2 bg-[var(--accent)] text-[var(--text)] rounded-md flex items-center hover:bg-[var(--primary-bg)] hover:text-[var(--primary)] transition-colors">
+                <i data-feather="mail" class="h-4 w-4 mr-2"></i>
+                <span>İletişim</span>
+              </a>
+              <a href="https://github.com/berkayderin" target="_blank" class="px-4 py-2 bg-[var(--accent)] text-[var(--text)] rounded-md flex items-center hover:bg-[var(--primary-bg)] hover:text-[var(--primary)] transition-colors">
+                <i data-feather="github" class="h-4 w-4 mr-2"></i>
+                <span>GitHub</span>
+              </a>
+              <a href="https://berkayderin.com.tr" target="_blank" class="px-4 py-2 bg-[var(--accent)] text-[var(--text)] rounded-md flex items-center hover:bg-[var(--primary-bg)] hover:text-[var(--primary)] transition-colors">
+                <i data-feather="globe" class="h-4 w-4 mr-2"></i>
+                <span>Portfolio</span>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
     
@@ -493,6 +582,33 @@
         
         themeToggle.addEventListener('change', toggleTheme);
         mobileThemeToggle.addEventListener('change', toggleTheme);
+        
+        // İç içe menü işlemleri
+        const submenuTriggers = document.querySelectorAll('.has-submenu');
+        
+        submenuTriggers.forEach(trigger => {
+          trigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const submenuId = this.getAttribute('data-submenu');
+            const submenu = document.getElementById(submenuId + '-submenu');
+            const arrow = this.querySelector('.menu-arrow');
+            
+            // Alt menüyü aç/kapat
+            submenu.classList.toggle('open');
+            arrow.classList.toggle('open');
+            
+            // Alt menünün yüksekliğini ayarla
+            if (submenu.classList.contains('open')) {
+              const submenuHeight = Array.from(submenu.children).reduce((height, item) => {
+                return height + item.offsetHeight;
+              }, 0);
+              submenu.style.height = submenuHeight + 'px';
+            } else {
+              submenu.style.height = '0';
+            }
+          });
+        });
         
         // Mobil menü
         const mobileMenuButton = document.getElementById('mobile-menu-button');
