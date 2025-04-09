@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="tr" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <title>Deep UI</title>
+    <style>
+      :root {
+        --deep-blue: #3034ff;
+        --deep-blue-light: #5256ff;
+        --deep-blue-dark: #2428cc;
+        --deep-blue-fade: rgba(48, 52, 255, 0.2);
+        --deep-blue-glow: rgba(48, 52, 255, 0.3);
+        
+        --light-bg: #f8fafc;
+        --light-card: #ffffff;
+        --light-border: #e2e8f0;
+        --light-text: #1e293b;
+        --light-text-muted: #64748b;
+        --light-primary: var(--deep-blue);
+        --light-primary-bg: #ededff;
+        --light-accent: #f1f5f9;
+        
+        --dark-bg: #080c16;
+        --dark-card: #111827;
+        --dark-card-hover: #1a2235;
+        --dark-border: #1e2a3e;
+        --dark-border-hover: #2d4056;
+        --dark-text: #f1f5f9;
+        --dark-text-muted: #94a3b8;
+        --dark-primary: var(--deep-blue-light);
+        --dark-primary-hover: #7577ff;
+        --dark-primary-bg: rgba(48, 52, 255, 0.2);
+        --dark-primary-glow: rgba(48, 52, 255, 0.3);
+        --dark-accent: #1e293b;
+        --dark-sidebar: linear-gradient(180deg, #111827 0%, #0c1322 100%);
+        --dark-card-gradient: linear-gradient(145deg, #151d2e 0%, #0e1420 100%);
+        --dark-highlight: rgba(255, 255, 255, 0.05);
+      }
+
+      .light {
+        --bg: var(--light-bg);
+        --card: var(--light-card);
+        --border: var(--light-border);
+        --text: var(--light-text);
+        --text-muted: var(--light-text-muted);
+        --primary: var(--light-primary);
+        --primary-bg: var(--light-primary-bg);
+        --accent: var(--light-accent);
+        --sidebar-bg: var(--light-card);
+        --card-gradient: var(--light-card);
+        --highlight: transparent;
+      }
+
+      .dark {
+        --bg: var(--dark-bg);
+        --card: var(--dark-card);
+        --border: var(--dark-border);
+        --text: var(--dark-text);
+        --text-muted: var(--dark-text-muted);
+        --primary: var(--dark-primary);
+        --primary-bg: var(--dark-primary-bg);
+        --accent: var(--dark-accent);
+        --sidebar-bg: var(--dark-sidebar);
+        --card-gradient: var(--dark-card-gradient);
+        --highlight: var(--dark-highlight);
+      }
+
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+      }
+      
+      .deep-ui-sidebar {
+        background: var(--sidebar-bg);
+        border-color: var(--border);
+      }
+      
+      .deep-ui-card {
+        background: var(--card-gradient);
+        border: 1px solid var(--border);
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+      
+      .dark .deep-ui-card {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(8px);
+      }
+      
+      .deep-ui-button {
+        background-color: var(--accent);
+        color: var(--text-muted);
+        transition: all 0.2s;
+      }
+      
+      .deep-ui-button:hover {
+        background-color: var(--primary-bg);
+        color: var(--primary);
+      }
+      
+      .dark .deep-ui-button:hover {
+        box-shadow: 0 0 10px var(--dark-primary-glow);
+      }
+      
+      .theme-switch {
+        position: relative;
+        width: 56px;
+        height: 28px;
+        background-color: var(--accent);
+        border-radius: 14px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      
+      .dark .theme-switch {
+        background: var(--dark-accent);
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+      }
+      
+      .theme-switch::after {
+        content: "";
+        position: absolute;
+        left: 4px;
+        top: 4px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: var(--card);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s;
+      }
+      
+      .dark .theme-switch::after {
+        transform: translateX(28px);
+        background: linear-gradient(135deg, var(--deep-blue-light), var(--deep-blue));
+        box-shadow: 0 0 15px var(--deep-blue-glow);
+      }
+      
+      .theme-switch::before {
+        content: "☀️";
+        position: absolute;
+        right: 8px;
+        top: 6px;
+        font-size: 12px;
+      }
+      
+      .dark .theme-switch::before {
+        content: "🌙";
+        left: 8px;
+        right: auto;
+      }
+      
+      .deep-ui-active {
+        color: var(--primary);
+        background-color: var(--primary-bg);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .dark .deep-ui-active {
+        box-shadow: 0 0 15px var(--dark-primary-glow);
+      }
+      
+      .dark .deep-ui-active::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--dark-primary), transparent);
+      }
+      
+      .deep-ui-active::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background-color: var(--primary);
+      }
+      
+      .deep-ui-icon-bg {
+        background-color: var(--accent);
+        color: var(--text-muted);
+      }
+      
+      .dark .deep-ui-icon-bg {
+        background-color: rgba(30, 41, 59, 0.8);
+        color: var(--dark-text-muted);
+      }
+      
+      .deep-ui-heading {
+        color: var(--text-muted);
+      }
+      
+      .badge {
+        border-radius: 9999px;
+        padding: 0.125rem 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      
+      .badge-primary {
+        background-color: var(--primary-bg);
+        color: var(--primary);
+      }
+      
+      .dark .badge-primary {
+        background-color: var(--deep-blue-fade);
+        color: #a5a6ff;
+        border: 1px solid rgba(48, 52, 255, 0.3);
+      }
+      
+      .badge-gray {
+        background-color: var(--accent);
+        color: var(--text-muted);
+      }
+      
+      .dark .badge-gray {
+        background-color: rgba(30, 41, 59, 0.8);
+        border: 1px solid rgba(71, 85, 105, 0.3);
+      }
+      
+      .badge-red {
+        background-color: #fee2e2;
+        color: #ef4444;
+      }
+      
+      .dark .badge-red {
+        background-color: rgba(220, 38, 38, 0.2);
+        color: #fca5a5;
+        border: 1px solid rgba(220, 38, 38, 0.3);
+      }
+      
+      .dark .menu-item-hover:hover {
+        background: rgba(71, 85, 105, 0.2);
+        backdrop-filter: blur(1px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--dark-border-hover);
+      }
+      
+      .dark .avatar-ring {
+        position: relative;
+      }
+      
+      .dark .avatar-ring::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: 9999px;
+        padding: 2px;
+        background: linear-gradient(135deg, var(--deep-blue), var(--deep-blue-light), transparent 60%);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+      }
+      
+      /* Overlay arka planını blur efekti ve daha sofistike hale getir */
+      .dark .overlay-blur {
+        backdrop-filter: blur(1px);      
+        background: rgba(8, 12, 22, 0.8);
+      }
+    </style>
+  </head>
+  <body class="flex flex-col md:flex-row font-[Plus_Jakarta_Sans]">
+    <!-- Mobil Header -->
+    <div class="deep-ui-sidebar py-4 px-4 flex items-center justify-between md:hidden">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-[#3034ff] rounded-lg flex items-center justify-center">
+          <span class="text-white font-bold text-lg">D</span>
+        </div>
+        <h1 class="text-lg font-semibold">Deep UI</h1>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button id="mobile-theme-toggle" class="theme-switch" aria-label="Tema Değiştir"></button>
+        <button id="mobile-menu-button" class="deep-ui-button p-2 rounded-lg">
+          <i data-feather="menu" class="h-5 w-5"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="deep-ui-sidebar transform -translate-x-full md:translate-x-0 fixed md:sticky top-0 left-0 max-h-screen overflow-hidden z-30 w-72 flex flex-col transition-transform duration-300 ease-in-out">
+      <!-- Logo ve Marka - Tablet ve Masaüstü -->
+      <div class="px-6 py-4 hidden md:block">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-[#3034ff] dark:bg-[#3034ff] rounded-xl flex items-center justify-center dark:shadow-lg dark:shadow-[#3034ff]/20">
+              <span class="text-white font-bold text-xl">D</span>
+            </div>
+            <h1 class="text-xl font-semibold">Deep UI</h1>
+          </div>
+          <button id="theme-toggle" class="theme-switch" aria-label="Tema Değiştir"></button>
+        </div>
+      </div>
+      
+      <!-- Mobil header ve kapatma düğmesi -->
+      <div class="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between md:hidden">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 bg-[#3034ff] dark:bg-[#3034ff] rounded-lg flex items-center justify-center dark:shadow-lg dark:shadow-[#3034ff]/20">
+            <span class="text-white font-bold text-lg">D</span>
+          </div>
+          <h1 class="text-lg font-semibold">Deep UI</h1>
+        </div>
+        <button id="close-sidebar" class="deep-ui-button p-2 rounded-lg">
+          <i data-feather="x" class="h-5 w-5"></i>
+        </button>
+      </div>
+      
+      <!-- Arama kutusu -->
+      <div class="px-6 py-3">
+        <div class="relative">
+          <input type="text" placeholder="Ara..." class="w-full pl-10 pr-4 py-2 rounded-xl bg-[var(--accent)] border-0 text-[var(--text)] text-sm focus:ring-2 focus:ring-[#3034ff] focus:outline-none placeholder-[var(--text-muted)] dark:bg-slate-800/50 dark:border dark:border-slate-700/50 dark:backdrop-blur-sm" />
+          <div class="absolute left-3.5 top-2.5 text-[var(--text-muted)]">
+            <i data-feather="search" class="h-5 w-5"></i>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Navigasyon -->
+      <div class="px-4 py-2 flex-1 overflow-y-auto">
+        <!-- Ana Menü -->
+        <div class="mb-6">
+          <span class="px-3 text-xs font-medium deep-ui-heading uppercase tracking-wider">Ana Menü</span>
+          
+          <div class="mt-3 space-y-1">
+            <a href="#" class="deep-ui-active flex items-center px-3 py-2.5 text-sm font-medium rounded-xl border border-transparent dark:border-[#3034ff]/20">
+              <div class="p-1.5 rounded-lg deep-ui-icon-bg mr-3 dark:bg-[#3034ff]/20 dark:text-[#a5a6ff]">
+                <i data-feather="home" class="h-5 w-5"></i>
+              </div>
+              Ana Sayfa
+              <span class="ml-auto badge badge-primary">Yeni</span>
+            </a>
+            
+            <a href="#" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl hover:bg-[var(--accent)] group transition-colors menu-item-hover border border-transparent">
+              <div class="p-1.5 rounded-lg deep-ui-icon-bg mr-3 group-hover:bg-[var(--primary-bg)] group-hover:text-[var(--primary)] transition-colors">
+                <i data-feather="bar-chart-2" class="h-5 w-5"></i>
+              </div>
+              İstatistikler
+            </a>
+            
+            <a href="#" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl hover:bg-[var(--accent)] group transition-colors menu-item-hover border border-transparent">
+              <div class="p-1.5 rounded-lg deep-ui-icon-bg mr-3 group-hover:bg-[var(--primary-bg)] group-hover:text-[var(--primary)] transition-colors">
+                <i data-feather="folder" class="h-5 w-5"></i>
+              </div>
+              Projeler
+              <span class="ml-auto badge badge-gray">3</span>
+            </a>
+          </div>
+        </div>
+        
+        <!-- İletişim Menüsü -->
+        <div class="mb-6">
+          <span class="px-3 text-xs font-medium deep-ui-heading uppercase tracking-wider">İletişim</span>
+          
+          <div class="mt-3 space-y-1">
+            <a href="#" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl hover:bg-[var(--accent)] group transition-colors menu-item-hover border border-transparent">
+              <div class="p-1.5 rounded-lg deep-ui-icon-bg mr-3 group-hover:bg-[var(--primary-bg)] group-hover:text-[var(--primary)] transition-colors">
+                <i data-feather="message-square" class="h-5 w-5"></i>
+              </div>
+              Mesajlar
+              <span class="ml-auto badge badge-red">5</span>
+            </a>
+            
+            <a href="#" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl hover:bg-[var(--accent)] group transition-colors menu-item-hover border border-transparent">
+              <div class="p-1.5 rounded-lg deep-ui-icon-bg mr-3 group-hover:bg-[var(--primary-bg)] group-hover:text-[var(--primary)] transition-colors">
+                <i data-feather="users" class="h-5 w-5"></i>
+              </div>
+              Takım
+            </a>
+            
+            <a href="#" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl hover:bg-[var(--accent)] group transition-colors menu-item-hover border border-transparent">
+              <div class="p-1.5 rounded-lg deep-ui-icon-bg mr-3 group-hover:bg-[var(--primary-bg)] group-hover:text-[var(--primary)] transition-colors">
+                <i data-feather="calendar" class="h-5 w-5"></i>
+              </div>
+              Takvim
+            </a>
+          </div>
+        </div>
+        
+        <!-- Ayarlar -->
+        <div>
+          <span class="px-3 text-xs font-medium deep-ui-heading uppercase tracking-wider">Sistem</span>
+          
+          <div class="mt-3 space-y-1">
+            <a href="#" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl hover:bg-[var(--accent)] group transition-colors menu-item-hover border border-transparent">
+              <div class="p-1.5 rounded-lg deep-ui-icon-bg mr-3 group-hover:bg-[var(--primary-bg)] group-hover:text-[var(--primary)] transition-colors">
+                <i data-feather="settings" class="h-5 w-5"></i>
+              </div>
+              Ayarlar
+            </a>
+            
+            <a href="#" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl hover:bg-[var(--accent)] group transition-colors menu-item-hover border border-transparent">
+              <div class="p-1.5 rounded-lg deep-ui-icon-bg mr-3 group-hover:bg-[var(--primary-bg)] group-hover:text-[var(--primary)] transition-colors">
+                <i data-feather="file-text" class="h-5 w-5"></i>
+              </div>
+              Dokümanlar
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Kullanıcı Profili -->
+      <div class="mt-auto border-t border-[var(--border)]">
+        <div class="p-3">
+          <div class="deep-ui-card p-3 rounded-xl flex items-center dark:backdrop-blur-sm">
+            <div class="relative flex-shrink-0 avatar-ring">
+              <div class="w-10 h-10 bg-[#ededff] dark:bg-[#3034ff]/20 rounded-full flex items-center justify-center">
+                <span class="text-[#3034ff] dark:text-[#a5a6ff] font-medium">AY</span>
+              </div>
+              <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[var(--card)]"></div>
+            </div>
+            <div class="ml-3 min-w-0 flex-1">
+              <p class="text-sm font-medium truncate">Ahmet Yılmaz</p>
+              <p class="text-xs text-[var(--text-muted)] truncate">ahmet@deepui.com</p>
+            </div>
+            <button class="ml-auto deep-ui-button p-1.5 rounded-lg">
+              <i data-feather="log-out" class="h-5 w-5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Arkaplan overlay - sadece mobil -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 backdrop-blur-sm z-20 hidden md:hidden overlay-blur"></div>
+    
+    <!-- Ana içerik -->
+    <div class="flex-1 p-4 md:p-10 pt-0 md:pt-10">
+      <div class="deep-ui-card p-6 mt-4">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 bg-[#3034ff] dark:bg-[#3034ff]/40 rounded-xl flex items-center justify-center dark:shadow-lg dark:shadow-[#3034ff]/10">
+            <span class="text-white font-bold text-xl">D</span>
+          </div>
+          <h1 class="text-2xl font-bold ml-3">Deep UI</h1>
+        </div>
+        <p class="text-[var(--text-muted)]">Hem açık hem koyu tema desteği sunan modern arayüz sistemi. Koyu mod desteği ile göz yorgunluğunu azaltın ve daha kaliteli bir kullanıcı deneyimi yaşayın.</p>
+        <div class="mt-4 flex space-x-2">
+          <button class="px-4 py-2 bg-[#3034ff] hover:bg-[#252adb] text-white rounded-lg transition-colors dark:shadow-lg dark:shadow-[#3034ff]/20">Başla</button>
+          <button class="px-4 py-2 deep-ui-button rounded-lg">Daha Fazla</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        feather.replace();
+        
+        // Tema değiştirme fonksiyonu
+        function toggleTheme() {
+          const html = document.documentElement;
+          if (html.classList.contains('dark')) {
+            html.classList.remove('dark');
+            html.classList.add('light');
+            localStorage.setItem('theme', 'light');
+          } else {
+            html.classList.remove('light');
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+          }
+        }
+        
+        // Kullanıcının tema tercihini kontrol et
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+          document.documentElement.classList.remove('light');
+          document.documentElement.classList.add('dark');
+        }
+        
+        // Tema düğmeleri
+        const themeToggle = document.getElementById('theme-toggle');
+        const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+        
+        themeToggle.addEventListener('click', toggleTheme);
+        mobileThemeToggle.addEventListener('click', toggleTheme);
+        
+        // Mobil menü için gerekli elementler
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const closeSidebarButton = document.getElementById('close-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        
+        // Hamburger menü açma
+        mobileMenuButton.addEventListener('click', function() {
+          sidebar.classList.remove('-translate-x-full');
+          overlay.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+        });
+        
+        // Sidebar kapatma
+        function closeSidebar() {
+          sidebar.classList.add('-translate-x-full');
+          overlay.classList.add('hidden');
+          document.body.classList.remove('overflow-hidden');
+        }
+        
+        closeSidebarButton.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', closeSidebar);
+        
+        // Ekran boyutu değiştiğinde kontrol
+        window.addEventListener('resize', function() {
+          if (window.innerWidth >= 768) {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+          } else {
+            sidebar.classList.add('-translate-x-full');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
