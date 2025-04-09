@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep ERP</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @keyframes shine {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 200% 200%;
+            }
+        }
+        
+        .sidebar-bg {
+            background: linear-gradient(165deg, #113285, #0d2663);
+        }
+        
+        .gradient-blue-dark {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(120deg, #ffffff, #c8d4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .shine-effect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 25%, rgba(255, 255, 255, 0.2) 50%, transparent 75%);
+            background-size: 200% 200%;
+            animation: shine 3s infinite;
+        }
+        
+        .active-indicator::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, #4f97ff, #2563eb);
+            border-radius: 0 4px 4px 0;
+        }
+        
+        /* Sidebar collapsed state styles */
+        .sidebar-collapsed {
+            width: 70px !important;
+        }
+        
+        .sidebar-collapsed .logo-text {
+            display: none;
+        }
+        
+        .sidebar-collapsed .menu-icon {
+            margin-right: 0 !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+        
+        .sidebar-collapsed .menu-item {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        
+        .sidebar-collapsed .badge-notification {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            transform: none;
+            width: 16px;
+            height: 16px;
+            min-width: 16px;
+            font-size: 10px;
+            padding: 0;
+        }
+        
+        .sidebar-collapsed .footer-content {
+            justify-content: center !important;
+        }
+    </style>
+</head>
+<body class="font-sans bg-sky-50 m-0 p-0 overflow-x-hidden">
+    <button id="mobile-toggle" class="lg:hidden fixed top-4 left-4 z-50 bg-blue-700 text-white border-none rounded p-2.5 cursor-pointer shadow-md">
+        <i class="bi bi-list"></i>
+    </button>
+    
+    <div id="sidebar" class="sidebar-bg fixed h-screen w-[280px] text-white shadow-lg transition-all duration-300 z-40 overflow-y-auto overflow-x-hidden backdrop-blur-md">
+        <div class="sticky top-0 z-10 sidebar-bg px-5 py-4 pb-4 flex items-center border-b border-white/10 backdrop-blur-md">
+            <div class="gradient-blue-dark relative flex items-center justify-center h-[42px] w-[42px] mr-4 rounded-[10px] shadow-lg text-white font-bold text-xs uppercase tracking-wider overflow-hidden flex-shrink-0 text-center leading-tight shine-effect">
+                DEEP<br>ERP
+            </div>
+            <h3 class="logo-text m-0 text-xl font-semibold whitespace-nowrap overflow-hidden gradient-text tracking-wide">DeepERP</h3>
+        </div>
+        
+        <div class="user-details-section flex items-center px-5 py-4 mb-2.5 bg-white/5 border-t border-b border-white/5">
+            <div class="w-[42px] h-[42px] rounded-full bg-blue-100 overflow-hidden mr-3 flex items-center justify-center flex-shrink-0 shadow-md">
+                <i class="bi bi-person-fill text-2xl text-blue-700"></i>
+            </div>
+            <div class="user-details flex-1 min-w-0">
+                <p class="font-semibold text-base m-0 whitespace-nowrap overflow-hidden text-ellipsis">Berkay Derin</p>
+                <p class="text-sm opacity-80 m-0 whitespace-nowrap overflow-hidden text-ellipsis">Yönetici</p>
+            </div>
+        </div>
+        
+        <div class="px-2.5 py-4 relative">
+            <div class="menu-section text-xs px-4 py-2 pb-0 text-white/50 uppercase tracking-wider font-medium">Ana Menü</div>
+            
+            <a href="#" class="menu-item flex items-center py-3 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 relative my-1 rounded-lg bg-white/10 hover:bg-white/10 hover:shadow-sm active-indicator">
+                <i class="menu-icon bi bi-speedometer2 mr-3.5 text-lg w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                <span class="menu-text">Gösterge Paneli</span>
+            </a>
+            
+            <div class="has-submenu relative">
+                <a href="#" class="menu-item flex items-center py-3 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-1 rounded-lg">
+                    <i class="menu-icon bi bi-basket mr-3.5 text-lg w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                    <span class="menu-text">Satış Yönetimi</span>
+                    <i class="chevron-icon bi bi-chevron-down absolute right-5 transition-transform duration-300"></i>
+                </a>
+                <div class="submenu py-1 px-0 pl-9 max-h-0 overflow-hidden transition-all duration-300 bg-[rgba(9,30,90,0.5)] mx-1 rounded-lg">
+                    <a href="#" class="menu-item flex items-center py-2.5 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-0.5 rounded-lg text-[15px]">
+                        <i class="menu-icon bi bi-receipt mr-3.5 text-[0.9rem] w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                        <span class="menu-text">Siparişler</span>
+                    </a>
+                    <a href="#" class="menu-item flex items-center py-2.5 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-0.5 rounded-lg text-[15px]">
+                        <i class="menu-icon bi bi-people mr-3.5 text-[0.9rem] w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                        <span class="menu-text">Müşteriler</span>
+                    </a>
+                    <a href="#" class="menu-item flex items-center py-2.5 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-0.5 rounded-lg text-[15px]">
+                        <i class="menu-icon bi bi-tag mr-3.5 text-[0.9rem] w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                        <span class="menu-text">Teklifler</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="has-submenu relative">
+                <a href="#" class="menu-item flex items-center py-3 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-1 rounded-lg">
+                    <i class="menu-icon bi bi-box-seam mr-3.5 text-lg w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                    <span class="menu-text">Stok Yönetimi</span>
+                    <i class="chevron-icon bi bi-chevron-down absolute right-5 transition-transform duration-300"></i>
+                </a>
+                <div class="submenu py-1 px-0 pl-9 max-h-0 overflow-hidden transition-all duration-300 bg-[rgba(9,30,90,0.5)] mx-1 rounded-lg">
+                    <a href="#" class="menu-item flex items-center py-2.5 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-0.5 rounded-lg text-[15px]">
+                        <i class="menu-icon bi bi-boxes mr-3.5 text-[0.9rem] w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                        <span class="menu-text">Ürünler</span>
+                    </a>
+                    <a href="#" class="menu-item flex items-center py-2.5 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-0.5 rounded-lg text-[15px]">
+                        <i class="menu-icon bi bi-arrow-left-right mr-3.5 text-[0.9rem] w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                        <span class="menu-text">Stok Hareketleri</span>
+                    </a>
+                    <a href="#" class="menu-item flex items-center py-2.5 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-0.5 rounded-lg text-[15px]">
+                        <i class="menu-icon bi bi-building mr-3.5 text-[0.9rem] w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                        <span class="menu-text">Depolar</span>
+                    </a>
+                </div>
+            </div>
+            
+            <a href="#" class="menu-item flex items-center py-3 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-1 rounded-lg">
+                <i class="menu-icon bi bi-cash-stack mr-3.5 text-lg w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                <span class="menu-text">Finans</span>
+                <span class="badge-notification absolute top-1/2 -translate-y-1/2 right-3.5 bg-red-500 text-white rounded-xl min-w-[20px] h-[20px] text-[12px] flex items-center justify-center px-1.5 font-semibold shadow-sm">3</span>
+            </a>
+            
+            <a href="#" class="menu-item flex items-center py-3 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-1 rounded-lg">
+                <i class="menu-icon bi bi-person-badge mr-3.5 text-lg w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                <span class="menu-text">İnsan Kaynakları</span>
+            </a>
+            
+            <div class="menu-section text-xs px-4 py-2 pb-0 mt-2 text-white/50 uppercase tracking-wider font-medium">Raporlar</div>
+            
+            <a href="#" class="menu-item flex items-center py-3 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-1 rounded-lg">
+                <i class="menu-icon bi bi-graph-up mr-3.5 text-lg w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                <span class="menu-text">Satış Raporları</span>
+            </a>
+            
+            <a href="#" class="menu-item flex items-center py-3 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-1 rounded-lg">
+                <i class="menu-icon bi bi-bar-chart mr-3.5 text-lg w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                <span class="menu-text">Finansal Raporlar</span>
+            </a>
+            
+            <a href="#" class="menu-item flex items-center py-3 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-1 rounded-lg">
+                <i class="menu-icon bi bi-clock-history mr-3.5 text-lg w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                <span class="menu-text">Aktivite Geçmişi</span>
+            </a>
+            
+            <div class="menu-section text-xs px-4 py-2 pb-0 mt-2 text-white/50 uppercase tracking-wider font-medium">Ayarlar</div>
+            
+            <a href="#" class="menu-item flex items-center py-3 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-1 rounded-lg">
+                <i class="menu-icon bi bi-gear mr-3.5 text-lg w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                <span class="menu-text">Sistem Ayarları</span>
+            </a>
+            
+            <a href="#" class="menu-item flex items-center py-3 px-4 text-white no-underline transition-all duration-200 hover:translate-x-0.5 hover:bg-white/10 hover:shadow-sm relative my-1 rounded-lg">
+                <i class="menu-icon bi bi-shield-check mr-3.5 text-lg w-[22px] h-[22px] flex items-center justify-center text-white/90 relative transition-transform duration-200 hover:scale-110 hover:text-white"></i>
+                <span class="menu-text">Kullanıcı Yönetimi</span>
+            </a>
+        </div>
+        
+        <div class="footer-content sticky bottom-0 w-full px-5 py-4 border-t border-white/10 flex items-center justify-between sidebar-bg z-10 shadow-[0_-5px_15px_rgba(0,0,0,0.05)] backdrop-blur-md">
+            <div class="footer-text text-[13px] opacity-70">© 2025 DeepERP</div>
+            <button id="toggle-sidebar" class="bg-white/10 border-none text-white cursor-pointer text-base w-[30px] h-[30px] rounded-md flex items-center justify-center transition-all duration-200 hover:bg-white/20">
+                <i class="bi bi-arrow-left"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div id="overlay" class="hidden fixed inset-0 bg-black/50 z-30"></div>
+    
+    <div id="content" class="ml-[280px] p-5 transition-all duration-300">
+        <div class="container-fluid">
+            <p>Github: <a href="https://github.com/berkayderin" class="text-blue-600 hover:text-blue-800">berkayderin</a></p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            const toggleBtn = document.getElementById('toggle-sidebar');
+            const mobileToggle = document.getElementById('mobile-toggle');
+            const overlay = document.getElementById('overlay');
+            
+            // Sidebar toggle
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('sidebar-collapsed');
+                
+                if (sidebar.classList.contains('sidebar-collapsed')) {
+                    content.classList.remove('ml-[280px]');
+                    content.classList.add('ml-[70px]');
+                    toggleBtn.innerHTML = '<i class="bi bi-arrow-right"></i>';
+                    
+                    // Hide elements
+                    document.querySelectorAll('.menu-text, .chevron-icon, .menu-section, .user-details, .footer-text').forEach(el => {
+                        el.classList.add('hidden');
+                    });
+                    
+                    // Adjust icons
+                    document.querySelectorAll('.menu-icon').forEach(icon => {
+                        icon.classList.remove('mr-3.5');
+                        icon.classList.add('mx-auto');
+                    });
+                    
+                    // Center items
+                    document.querySelectorAll('.menu-item').forEach(item => {
+                        item.classList.add('justify-center', 'px-0');
+                    });
+                } else {
+                    content.classList.add('ml-[280px]');
+                    content.classList.remove('ml-[70px]');
+                    toggleBtn.innerHTML = '<i class="bi bi-arrow-left"></i>';
+                    
+                    // Show elements
+                    document.querySelectorAll('.menu-text, .chevron-icon, .menu-section, .user-details, .footer-text').forEach(el => {
+                        el.classList.remove('hidden');
+                    });
+                    
+                    // Restore icons
+                    document.querySelectorAll('.menu-icon').forEach(icon => {
+                        icon.classList.add('mr-3.5');
+                        icon.classList.remove('mx-auto');
+                    });
+                    
+                    // Restore items alignment
+                    document.querySelectorAll('.menu-item').forEach(item => {
+                        item.classList.remove('justify-center', 'px-0');
+                    });
+                }
+            });
+            
+            // Mobile toggle
+            if (mobileToggle) {
+                mobileToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('-translate-x-full');
+                    overlay.classList.toggle('hidden');
+                });
+            }
+            
+            // Click outside to close mobile sidebar
+            overlay.addEventListener('click', function() {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            });
+            
+            // Submenu toggle
+            const submenuItems = document.querySelectorAll('.has-submenu');
+            submenuItems.forEach(item => {
+                const menuItemLink = item.querySelector('.menu-item');
+                
+                menuItemLink.addEventListener('click', function(e) {
+                    // Don't toggle submenu when sidebar is collapsed
+                    if (sidebar.classList.contains('sidebar-collapsed')) {
+                        e.preventDefault();
+                        return;
+                    }
+                    
+                    e.preventDefault();
+                    const parent = this.closest('.has-submenu');
+                    const chevron = parent.querySelector('.bi-chevron-down');
+                    
+                    // Close all other submenus
+                    submenuItems.forEach(subItem => {
+                        if (subItem !== parent) {
+                            subItem.classList.remove('open');
+                            const subChevron = subItem.querySelector('.bi-chevron-down');
+                            if (subChevron) subChevron.classList.remove('rotate-180');
+                            const subSubmenu = subItem.querySelector('.submenu');
+                            if (subSubmenu) {
+                                subSubmenu.classList.remove('max-h-[500px]');
+                                subSubmenu.classList.remove('my-1');
+                            }
+                        }
+                    });
+                    
+                    // Toggle current submenu
+                    parent.classList.toggle('open');
+                    if (chevron) chevron.classList.toggle('rotate-180');
+                    const submenu = parent.querySelector('.submenu');
+                    if (submenu) {
+                        submenu.classList.toggle('max-h-[500px]');
+                        submenu.classList.toggle('my-1');
+                    }
+                });
+            });
+            
+            // Prevent clicks inside submenu from toggling parent
+            const submenuLinks = document.querySelectorAll('.submenu .menu-item');
+            submenuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+            
+            // Fix for mobile view - close sidebar when menu item clicked
+            const allMenuItems = document.querySelectorAll('.menu-item:not(.has-submenu > .menu-item)');
+            allMenuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth < 992) {
+                        sidebar.classList.add('-translate-x-full');
+                        overlay.classList.add('hidden');
+                    }
+                });
+            });
+            
+            // Initialize mobile view if needed
+            if (window.innerWidth < 992) {
+                sidebar.classList.add('-translate-x-full');
+                content.classList.remove('ml-[280px]');
+            }
+        });
+    </script>
+</body>
+</html>
