@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="tr" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <title>HR Dashboard</title>
+    <style>
+      :root {
+        --hr-green: #295A43;
+        --hr-green-light: #3A7057;
+        --hr-green-dark: #1D432F;
+        --hr-green-fade: rgba(41, 90, 67, 0.2);
+        
+        --light-bg: #f8fafc;
+        --light-card: #ffffff;
+        --light-border: #e2e8f0;
+        --light-text: #1e293b;
+        --light-text-muted: #64748b;
+        --light-primary: var(--hr-green);
+        --light-primary-bg: #EEFBF2;
+        --light-accent: #f1f5f9;
+        
+        --dark-bg: #0f172a;
+        --dark-card: #1e293b;
+        --dark-card-hover: #263449;
+        --dark-border: #334155;
+        --dark-text: #f1f5f9;
+        --dark-text-muted: #94a3b8;
+        --dark-primary: #4ADE80;
+        --dark-primary-hover: #22c55e;
+        --dark-primary-bg: rgba(74, 222, 128, 0.2);
+        --dark-accent: #334155;
+      }
+
+      .light {
+        --bg: var(--light-bg);
+        --card: var(--light-card);
+        --border: var(--light-border);
+        --text: var(--light-text);
+        --text-muted: var(--light-text-muted);
+        --primary: var(--light-primary);
+        --primary-bg: var(--light-primary-bg);
+        --accent: var(--light-accent);
+      }
+
+      .dark {
+        --bg: var(--dark-bg);
+        --card: var(--dark-card);
+        --border: var(--dark-border);
+        --text: var(--dark-text);
+        --text-muted: var(--dark-text-muted);
+        --primary: var(--dark-primary);
+        --primary-bg: var(--dark-primary-bg);
+        --accent: var(--dark-accent);
+      }
+
+      body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+      }
+      
+      .hr-sidebar {
+        background-color: var(--card);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+      
+      .menu-item {
+        display: flex;
+        align-items: center;
+        padding: 0.1rem 1rem;
+        margin: 0.5rem 0;
+        transition: all 0.3s;
+        color: var(--text);
+        position: relative;
+        border-radius: 0;
+        overflow: hidden;
+      }
+      
+      .menu-item:hover {
+        background-color: var(--hr-green-fade);
+        color: var(--primary);
+      }
+      
+      .menu-item.active {
+        color: var(--primary);
+        font-weight: 600;
+        background-color: transparent;
+      }
+      
+      .menu-item.active::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 5px;
+        background-color: var(--primary);
+      }
+      
+      .icon-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        margin-right: 1rem;
+      }
+      
+      .active .icon-container svg {
+        stroke: var(--primary);
+        stroke-width: 2.5;
+      }
+      
+      .theme-switch {
+        position: relative;
+        width: 60px;
+        height: 30px;
+        background: linear-gradient(to right, #295A43, #3A7057);
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      
+      .dark .theme-switch {
+        background: linear-gradient(to right, #334155, #1e293b);
+      }
+      
+      .theme-switch::after {
+        content: "";
+        position: absolute;
+        left: 3px;
+        top: 3px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s;
+      }
+      
+      .dark .theme-switch::after {
+        transform: translateX(30px);
+        background-color: var(--dark-primary);
+      }
+      
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 1.5rem;
+        height: 1.5rem;
+        padding: 0 0.5rem;
+        font-size: 0.7rem;
+        font-weight: 600;
+        border-radius: 1rem;
+        margin-left: auto;
+      }
+      
+      .badge-primary {
+        background-color: var(--primary);
+        color: white;
+      }
+      
+      .badge-gray {
+        background-color: var(--accent);
+        color: var(--text-muted);
+      }
+      
+      .search-input {
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 3rem;
+        background-color: transparent;
+        border: none;
+        border-bottom: 2px solid var(--border);
+        color: var(--text);
+        font-size: 0.875rem;
+        transition: all 0.3s;
+      }
+      
+      .search-input:focus {
+        outline: none;
+        border-color: var(--primary);
+      }
+      
+      .search-container {
+        position: relative;
+      }
+      
+      .search-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        transition: all 0.3s;
+      }
+      
+      .search-input:focus + .search-icon {
+        color: var(--primary);
+      }
+      
+      .category-title {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--primary);
+        margin: 1.5rem 0 0.75rem 1rem;
+        position: relative;
+      }
+      
+      .category-title::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        width: 2rem;
+        height: 2px;
+        background-color: var(--primary);
+      }
+      
+      .hr-content {
+        border-radius: 1rem;
+        overflow: hidden;
+        transition: all 0.3s;
+      }
+      
+      .user-profile {
+        border-radius: 0.5rem;
+        overflow: hidden;
+        transition: all 0.3s;
+      }
+      
+      .gradient-bg {
+        background: linear-gradient(135deg, var(--hr-green), var(--hr-green-dark));
+      }
+      
+      .mobile-header {
+        backdrop-filter: blur(8px);
+        background-color: rgba(255, 255, 255, 0.8);
+      }
+      
+      .dark .mobile-header {
+        background-color: rgba(15, 23, 42, 0.8);
+      }
+      
+      .glass-effect {
+        backdrop-filter: blur(10px);
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      .dark .glass-effect {
+        background-color: rgba(30, 41, 59, 0.4);
+        border: 1px solid rgba(51, 65, 85, 0.5);
+      }
+    </style>
+  </head>
+  <body class="flex flex-col md:flex-row font-[Montserrat]">
+    <!-- Mobil Header -->
+    <div class="py-4 px-6 flex items-center justify-between md:hidden mobile-header fixed top-0 left-0 right-0 z-20 border-b border-[var(--border)]">
+      <div class="flex items-center space-x-3">
+        <div class="h-9 w-9 gradient-bg rounded-full flex items-center justify-center shadow-lg">
+          <span class="text-white font-bold text-sm">HR</span>
+        </div>
+        <h1 class="text-base font-semibold">İK Portal</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button id="mobile-theme-toggle" class="theme-switch" aria-label="Tema Değiştir"></button>
+        <button id="mobile-menu-button" class="p-2 rounded-full glass-effect">
+          <i data-feather="menu" class="h-5 w-5"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="hr-sidebar transform -translate-x-full md:translate-x-0 fixed md:sticky top-0 left-0 h-full md:h-screen w-64 flex flex-col overflow-hidden z-30 transition-transform duration-300 ease-in-out">
+      <!-- Logo ve Marka -->
+      <div class="p-6 flex items-center justify-between">
+        <div class="flex items-center">
+          <div class="h-10 w-10 gradient-bg rounded-xl flex items-center justify-center shadow-lg">
+            <span class="text-white font-bold text-xl">HR</span>
+          </div>
+          <div class="ml-3">
+            <h1 class="text-lg font-bold">İK Portal</h1>
+            <div class="flex items-center">
+              <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
+              <p class="text-xs text-[var(--text-muted)]">Çevrimiçi</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Arama -->
+      <div class="px-6 pt-2 pb-2">
+        <div class="search-container">
+          <input type="text" placeholder="Ara..." class="search-input">
+          <i data-feather="search" class="h-4 w-4 search-icon"></i>
+        </div>
+      </div>
+      
+      <!-- Tema Değiştirici -->
+      <div class="px-6">
+        <div class="flex items-center justify-between p-3 glass-effect rounded-xl">
+          <div class="flex items-center">
+            <i data-feather="sun" class="h-5 w-5 mr-2"></i>
+            <span class="text-sm font-medium">Tema</span>
+          </div>
+          <button id="theme-toggle" class="theme-switch" aria-label="Tema Değiştir"></button>
+        </div>
+      </div>
+      
+      <!-- Menü -->
+      <div class="px-4 flex-1 overflow-y-auto">
+        <div>
+          <p class="category-title">İK Yönetimi</p>
+          
+          <a href="#" class="menu-item active">
+            <div class="icon-container">
+              <i data-feather="home" class="h-5 w-5"></i>
+            </div>
+            <span class="text-sm">Dashboard</span>
+          </a>
+          
+          <a href="#" class="menu-item">
+            <div class="icon-container">
+              <i data-feather="users" class="h-5 w-5"></i>
+            </div>
+            <span class="text-sm">Çalışanlar</span>
+            <span class="badge badge-gray">143</span>
+          </a>
+          
+          <a href="#" class="menu-item">
+            <div class="icon-container">
+              <i data-feather="briefcase" class="h-5 w-5"></i>
+            </div>
+            <span class="text-sm">İş İlanları</span>
+            <span class="badge badge-primary">8</span>
+          </a>
+          
+          <a href="#" class="menu-item">
+            <div class="icon-container">
+              <i data-feather="file-text" class="h-5 w-5"></i>
+            </div>
+            <span class="text-sm">Başvurular</span>
+            <span class="badge badge-primary">24</span>
+          </a>
+          
+          <a href="#" class="menu-item">
+            <div class="icon-container">
+              <i data-feather="calendar" class="h-5 w-5"></i>
+            </div>
+            <span class="text-sm">Takvim</span>
+          </a>
+        </div>
+        
+        <div>
+          <p class="category-title">Organizasyon</p>
+          
+          <a href="#" class="menu-item">
+            <div class="icon-container">
+              <i data-feather="bar-chart-2" class="h-5 w-5"></i>
+            </div>
+            <span class="text-sm">Performans</span>
+          </a>
+          
+          <a href="#" class="menu-item">
+            <div class="icon-container">
+              <i data-feather="award" class="h-5 w-5"></i>
+            </div>
+            <span class="text-sm">Eğitimler</span>
+          </a>
+          
+          <a href="#" class="menu-item">
+            <div class="icon-container">
+              <i data-feather="clipboard" class="h-5 w-5"></i>
+            </div>
+            <span class="text-sm">Raporlar</span>
+          </a>
+        </div>
+        
+        <div>
+          <p class="category-title">Sistem</p>
+          
+          <a href="#" class="menu-item">
+            <div class="icon-container">
+              <i data-feather="settings" class="h-5 w-5"></i>
+            </div>
+            <span class="text-sm">Ayarlar</span>
+          </a>
+          
+          <a href="#" class="menu-item">
+            <div class="icon-container">
+              <i data-feather="help-circle" class="h-5 w-5"></i>
+            </div>
+            <span class="text-sm">Yardım</span>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Kullanıcı Profili -->
+      <div class="mt-auto p-4">
+        <div class="gradient-bg p-4 rounded-xl text-white">
+          <div class="flex items-center mb-3">
+            <div class="relative">
+              <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                <span class="text-white font-semibold">MS</span>
+              </div>
+              <div class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
+            </div>
+            <div class="ml-3">
+              <p class="font-medium text-sm">Mehmet Saygı</p>
+              <p class="text-xs text-white/70">İK Müdürü</p>
+            </div>
+            <button class="ml-auto p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+              <i data-feather="log-out" class="h-4 w-4"></i>
+            </button>
+          </div>
+          <div class="flex justify-between text-xs">
+            <div>
+              <p class="opacity-70">Aktif İş</p>
+              <p class="font-medium mt-1">12</p>
+            </div>
+            <div>
+              <p class="opacity-70">Tamamlanan</p>
+              <p class="font-medium mt-1">48</p>
+            </div>
+            <div>
+              <p class="opacity-70">Başarı</p>
+              <p class="font-medium mt-1">92%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Arkaplan overlay - sadece mobil -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-20 hidden md:hidden"></div>
+    
+    <!-- Ana içerik -->
+    <div class="flex-1 pt-20 md:pt-0 p-4 md:p-8 overflow-y-auto">
+      <!-- Hoşgeldin Kartı -->
+      <div class="mb-8 gradient-bg p-6 rounded-2xl text-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 -mt-8 -mr-8 w-40 h-40 bg-white opacity-10 rounded-full"></div>
+        <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-32 h-32 bg-white opacity-10 rounded-full"></div>
+        
+        <h2 class="text-2xl font-bold mb-2 relative z-10">Hoş Geldin, Mehmet!</h2>
+        <p class="text-white/80 text-sm max-w-md relative z-10">Bugün 24 yeni başvuru ve 8 aktif iş ilanın var. Performans raporların incelemeye hazır.</p>
+        
+        <div class="mt-6 flex gap-3 relative z-10">
+          <button class="px-5 py-3 bg-white text-[var(--hr-green)] rounded-xl font-medium text-sm hover:bg-opacity-90 transition-colors shadow-lg">İşlemlere Başla</button>
+          <button class="px-5 py-3 bg-white/20 hover:bg-white/30 text-white rounded-xl font-medium text-sm transition-colors">Raporları Gör</button>
+        </div>
+      </div>
+      
+      <!-- İçerik Kartları Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="hr-content p-6 bg-[var(--card)] border border-[var(--border)] shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold flex items-center">
+              <i data-feather="users" class="h-5 w-5 mr-2 text-[var(--primary)]"></i>
+              Aktif Çalışanlar
+            </h3>
+            <span class="text-xs font-medium px-3 py-1 rounded-full bg-[var(--primary-bg)] text-[var(--primary)]">
+              143 Personel
+            </span>
+          </div>
+          <p class="text-sm text-[var(--text-muted)] mb-4">Departman dağılımı ve çalışan durumları</p>
+          
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-xs">Yazılım</span>
+              <span class="text-xs font-medium">42</span>
+            </div>
+            <div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
+              <div class="bg-[var(--primary)] h-2 rounded-full" style="width: 28%"></div>
+            </div>
+            
+            <div class="flex justify-between items-center mt-2">
+              <span class="text-xs">Muhasebe</span>
+              <span class="text-xs font-medium">38</span>
+            </div>
+            <div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
+              <div class="bg-[var(--primary)] h-2 rounded-full" style="width: 25%"></div>
+            </div>
+            
+            <div class="flex justify-between items-center mt-2">
+              <span class="text-xs">Pazarlama</span>
+              <span class="text-xs font-medium">35</span>
+            </div>
+            <div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
+              <div class="bg-[var(--primary)] h-2 rounded-full" style="width: 23%"></div>
+            </div>
+          </div>
+          
+          <button class="w-full mt-6 py-2 text-center text-sm font-medium text-[var(--primary)] hover:underline">
+            Tüm Departmanları Gör
+          </button>
+        </div>
+        
+        <div class="hr-content p-6 bg-[var(--card)] border border-[var(--border)] shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold flex items-center">
+              <i data-feather="briefcase" class="h-5 w-5 mr-2 text-[var(--primary)]"></i>
+              Aktif İş İlanları
+            </h3>
+            <span class="text-xs font-medium px-3 py-1 rounded-full bg-[var(--primary-bg)] text-[var(--primary)]">
+              8 İlan
+            </span>
+          </div>
+          <p class="text-sm text-[var(--text-muted)] mb-4">Açık pozisyonlar ve başvuru sayıları</p>
+          
+          <div class="space-y-3">
+            <div class="flex justify-between p-3 border border-[var(--border)] rounded-lg">
+              <div>
+                <p class="text-sm font-medium">Frontend Geliştirici</p>
+                <p class="text-xs text-[var(--text-muted)]">Yazılım • Tam Zamanlı</p>
+              </div>
+              <div class="text-right">
+                <p class="text-xs font-medium text-[var(--primary)]">12 Başvuru</p>
+                <p class="text-xs text-[var(--text-muted)]">5 gün kaldı</p>
+              </div>
+            </div>
+            
+            <div class="flex justify-between p-3 border border-[var(--border)] rounded-lg">
+              <div>
+                <p class="text-sm font-medium">İK Uzmanı</p>
+                <p class="text-xs text-[var(--text-muted)]">İnsan Kaynakları • Tam Zamanlı</p>
+              </div>
+              <div class="text-right">
+                <p class="text-xs font-medium text-[var(--primary)]">8 Başvuru</p>
+                <p class="text-xs text-[var(--text-muted)]">3 gün kaldı</p>
+              </div>
+            </div>
+          </div>
+          
+          <button class="w-full mt-6 py-2 text-center text-sm font-medium text-[var(--primary)] hover:underline">
+            Tüm İlanları Gör
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        feather.replace();
+        
+        // Tema değiştirme
+        function toggleTheme() {
+          const html = document.documentElement;
+          if (html.classList.contains('dark')) {
+            html.classList.remove('dark');
+            html.classList.add('light');
+            localStorage.setItem('theme', 'light');
+          } else {
+            html.classList.remove('light');
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+          }
+        }
+        
+        // Tema tercihi
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+          document.documentElement.classList.remove('light');
+          document.documentElement.classList.add('dark');
+        }
+        
+        // Tema butonları
+        const themeToggle = document.getElementById('theme-toggle');
+        const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+        
+        themeToggle.addEventListener('click', toggleTheme);
+        mobileThemeToggle.addEventListener('click', toggleTheme);
+        
+        // Mobil menü
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        
+        mobileMenuButton.addEventListener('click', function() {
+          sidebar.classList.remove('-translate-x-full');
+          overlay.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+        });
+        
+        function closeSidebar() {
+          sidebar.classList.add('-translate-x-full');
+          overlay.classList.add('hidden');
+          document.body.classList.remove('overflow-hidden');
+        }
+        
+        overlay.addEventListener('click', closeSidebar);
+        
+        // Ekran boyutu kontrolü
+        window.addEventListener('resize', function() {
+          if (window.innerWidth >= 768) {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+          } else {
+            sidebar.classList.add('-translate-x-full');
+          }
+        });
+      });
+    </script>
+  </body>
+</html> 
