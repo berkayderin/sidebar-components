@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        /* Sidebar Küçültme Stili */
+        .sidebar.collapsed {
+            width: 80px;
+        }
+        
+        .sidebar.collapsed .logo span,
+        .sidebar.collapsed .menu-item span,
+        .sidebar.collapsed .menu-section-title,
+        .sidebar.collapsed .user-details,
+        .sidebar.collapsed .submenu-icon,
+        .sidebar.collapsed .user-role {
+            display: none;
+        }
+        
+        .sidebar.collapsed .sidebar-content {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        .sidebar.collapsed .menu-item i {
+            margin-right: 0;
+            min-width: 100%;
+        }
+        
+        .sidebar.collapsed .toggle-btn {
+            transform: rotate(180deg);
+        }
+        
+        .sidebar.collapsed .submenu {
+            display: none;
+        }
+        
+        .sidebar.collapsed .user-section {
+            padding: 0.5rem;
+        }
+        
+        .sidebar.collapsed .user-info {
+            justify-content: center;
+            padding: 0.5rem;
+        }
+        
+        .sidebar.collapsed .user-status {
+            margin-right: 0;
+        }
+        
+        .sidebar.collapsed .user-details {
+            display: none;
+        }
+        
+        /* İçerik Alanı Genişleme Stili */
+        .content-area.expanded {
+            margin-left: 80px;
+        }
+        
+        /* Mobil Stiller */
+        @media (max-width: 768px) {
+            .sidebar {
+                left: -250px;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .content-area {
+                margin-left: 0;
+            }
+            
+            #mobileMenuBtn {
+                display: flex;
+            }
+            
+            .overlay.active {
+                display: block;
+            }
+        }
+        
+        /* Alt Menü Stili */
+        .submenu.active {
+            max-height: 500px;
+        }
+        
+        .menu-item.has-submenu.active .submenu-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Kullanıcı Menü Stili */
+        .user-menu.active {
+            display: block;
+        }
+        
+        /* Sidebar küçükken kullanıcı menüsü için özel stil */
+        .sidebar.collapsed .user-menu.active {
+            position: absolute;
+            left: 100%;
+            bottom: 0;
+            width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden font-['Inter']">
+    <button id="mobileMenuBtn" title="Menüyü Aç" class="fixed top-5 left-5 w-[50px] h-[50px] bg-[#DFE278] text-[#1a1c23] border-none rounded-lg cursor-pointer z-[2000] text-[1.75rem] items-center justify-center hidden shadow-lg">
+        <i class="ph ph-list"></i>
+    </button>
+    <div class="overlay fixed inset-0 bg-black/50 z-[98] hidden"></div>
+    <div class="sidebar w-[250px] h-screen bg-[#1a1c23] text-[#a0aec0] py-6 fixed left-0 top-0 transition-all duration-300 flex flex-col z-[99]">
+        <div class="logo h-[60px] px-6 mb-6 flex items-center relative">
+            <svg class="w-8 h-8 mr-3 flex-shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path class="fill-[#DFE278]" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            <span class="text-xl font-semibold text-white whitespace-nowrap">Deep Panel</span>
+            <div class="toggle-btn absolute top-1/2 -translate-y-1/2 -right-3 bg-[#DFE278] text-[#1a1c23] w-6 h-6 rounded-full flex items-center justify-center cursor-pointer border-2 border-[#1a1c23] text-xs transition-transform duration-300 z-10">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+        </div>
+        <div class="sidebar-content flex-1 overflow-y-auto px-6 [&::-webkit-scrollbar]:w-[6px] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-[#2d3748] [&::-webkit-scrollbar-thumb]:rounded-[3px]">
+            <div class="menu-section my-6">
+                <div class="menu-item flex items-center py-3 px-4 my-1 rounded-md cursor-pointer transition-all duration-200 w-full bg-[#2d3748] text-[#DFE278]">
+                    <i class="ph ph-house-simple mr-3 text-xl min-w-5 text-center"></i>
+                    <span class="text-sm font-medium">Gösterge Paneli</span>
+                </div>
+                <div class="menu-item flex items-center py-3 px-4 my-1 rounded-md cursor-pointer transition-all duration-200 w-full hover:bg-[#2d3748] hover:text-[#DFE278]">
+                    <i class="ph ph-shopping-cart mr-3 text-xl min-w-5 text-center"></i>
+                    <span class="text-sm font-medium">Siparişler</span>
+                </div>
+                <div class="menu-item flex items-center py-3 px-4 my-1 rounded-md cursor-pointer transition-all duration-200 w-full hover:bg-[#2d3748] hover:text-[#DFE278]">
+                    <i class="ph ph-package mr-3 text-xl min-w-5 text-center"></i>
+                    <span class="text-sm font-medium">Ürünler</span>
+                </div>
+            </div>
+
+            <div class="menu-section my-6">
+                <div class="menu-section-title text-xs font-semibold uppercase tracking-wider text-[#A8B060] mb-3 pl-4">Katalog Yönetimi</div>
+                <div class="menu-item flex items-center py-3 px-4 my-1 rounded-md cursor-pointer transition-all duration-200 w-full hover:bg-[#2d3748] hover:text-[#DFE278]">
+                    <i class="ph ph-tag mr-3 text-xl min-w-5 text-center"></i>
+                    <span class="text-sm font-medium">Kategoriler</span>
+                </div>
+                <div class="menu-item flex items-center py-3 px-4 my-1 rounded-md cursor-pointer transition-all duration-200 w-full hover:bg-[#2d3748] hover:text-[#DFE278]">
+                    <i class="ph ph-paint-brush mr-3 text-xl min-w-5 text-center"></i>
+                    <span class="text-sm font-medium">Markalar</span>
+                </div>
+                <div class="menu-item flex items-center py-3 px-4 my-1 rounded-md cursor-pointer transition-all duration-200 w-full hover:bg-[#2d3748] hover:text-[#DFE278]">
+                    <i class="ph ph-percent mr-3 text-xl min-w-5 text-center"></i>
+                    <span class="text-sm font-medium">İndirimler</span>
+                </div>
+            </div>
+
+            <div class="menu-section my-6">
+                <div class="menu-section-title text-xs font-semibold uppercase tracking-wider text-[#A8B060] mb-3 pl-4">Mağaza Yönetimi</div>
+                <div class="menu-item flex items-center py-3 px-4 my-1 rounded-md cursor-pointer transition-all duration-200 w-full hover:bg-[#2d3748] hover:text-[#DFE278]">
+                    <i class="ph ph-users mr-3 text-xl min-w-5 text-center"></i>
+                    <span class="text-sm font-medium">Müşteriler</span>
+                </div>
+                <div class="menu-item flex items-center py-3 px-4 my-1 rounded-md cursor-pointer transition-all duration-200 w-full hover:bg-[#2d3748] hover:text-[#DFE278]">
+                    <i class="ph ph-gear mr-3 text-xl min-w-5 text-center"></i>
+                    <span class="text-sm font-medium">Ayarlar</span>
+                </div>
+            </div>
+
+            <div class="menu-section my-6">
+                <div class="menu-section-title text-xs font-semibold uppercase tracking-wider text-[#A8B060] mb-3 pl-4">Örnek Menü</div>
+                <div class="menu-item has-submenu flex items-center py-3 px-4 my-1 rounded-md cursor-pointer transition-all duration-200 w-full hover:bg-[#2d3748] hover:text-[#DFE278] relative">
+                    <i class="ph ph-stack mr-3 text-xl min-w-5 text-center"></i>
+                    <span class="text-sm font-medium">Projeler</span>
+                    <i class="ph ph-caret-down ml-auto transition-transform duration-300 text-base submenu-icon"></i>
+                </div>
+                <div class="submenu static pl-10 max-h-0 overflow-hidden transition-[max-height] duration-300 mt-0">
+                    <div class="menu-item flex items-center py-2 px-3 my-1 opacity-80 transition-all duration-200 hover:opacity-100 hover:bg-[#2d3748]">
+                        <i class="ph ph-code mr-3 text-xl min-w-5 text-center"></i>
+                        <span class="text-sm font-medium">Web Projeleri</span>
+                    </div>
+                    <div class="menu-item flex items-center py-2 px-3 my-1 opacity-80 transition-all duration-200 hover:opacity-100 hover:bg-[#2d3748]">
+                        <i class="ph ph-device-mobile mr-3 text-xl min-w-5 text-center"></i>
+                        <span class="text-sm font-medium">Mobil Projeler</span>
+                    </div>
+                    <div class="menu-item flex items-center py-2 px-3 my-1 opacity-80 transition-all duration-200 hover:opacity-100 hover:bg-[#2d3748]">
+                        <i class="ph ph-desktop mr-3 text-xl min-w-5 text-center"></i>
+                        <span class="text-sm font-medium">Masaüstü Projeler</span>
+                    </div>
+                </div>
+                <div class="menu-item has-submenu flex items-center py-3 px-4 my-1 rounded-md cursor-pointer transition-all duration-200 w-full hover:bg-[#2d3748] hover:text-[#DFE278] relative">
+                    <i class="ph ph-folder mr-3 text-xl min-w-5 text-center"></i>
+                    <span class="text-sm font-medium">Dökümanlar</span>
+                    <i class="ph ph-caret-down ml-auto transition-transform duration-300 text-base submenu-icon"></i>
+                </div>
+                <div class="submenu static pl-10 max-h-0 overflow-hidden transition-[max-height] duration-300 mt-0">
+                    <div class="menu-item flex items-center py-2 px-3 my-1 opacity-80 transition-all duration-200 hover:opacity-100 hover:bg-[#2d3748]">
+                        <i class="ph ph-book mr-3 text-xl min-w-5 text-center"></i>
+                        <span class="text-sm font-medium">Kılavuzlar</span>
+                    </div>
+                    <div class="menu-item flex items-center py-2 px-3 my-1 opacity-80 transition-all duration-200 hover:opacity-100 hover:bg-[#2d3748]">
+                        <i class="ph ph-file-text mr-3 text-xl min-w-5 text-center"></i>
+                        <span class="text-sm font-medium">Belgeler</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="user-section p-4 px-6 border-t border-[#2d3748] mt-auto">
+            <div class="user-info flex items-center p-3 bg-[#2d3748] rounded-lg transition-all duration-200 cursor-pointer relative hover:bg-[#374151]">
+                <div class="user-menu absolute bottom-full left-0 w-full bg-[#2d3748] rounded-lg p-2 mb-2 hidden z-[1000]">
+                    <a href="mailto:derinberkay67@gmail.com" class="menu-link flex items-center p-3 text-[#DFE278] no-underline rounded-md transition-all duration-200 whitespace-nowrap hover:bg-[#374151]">
+                        <i class="ph ph-envelope text-xl mr-3 min-w-5 text-center"></i>
+                        <span class="text-sm font-medium">E-posta</span>
+                    </a>
+                    <a href="tel:+905379733649" class="menu-link flex items-center p-3 text-[#DFE278] no-underline rounded-md transition-all duration-200 whitespace-nowrap hover:bg-[#374151]">
+                        <i class="ph ph-phone text-xl mr-3 min-w-5 text-center"></i>
+                        <span class="text-sm font-medium">Telefon</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/berkayderin" target="_blank" class="menu-link flex items-center p-3 text-[#DFE278] no-underline rounded-md transition-all duration-200 whitespace-nowrap hover:bg-[#374151]">
+                        <i class="ph ph-linkedin-logo text-xl mr-3 min-w-5 text-center"></i>
+                        <span class="text-sm font-medium">LinkedIn</span>
+                    </a>
+                </div>
+                <div class="user-status relative w-10 h-10 mr-3 bg-[#1a1c23] rounded-lg flex items-center justify-center">
+                    <i class="ph ph-user-circle text-2xl text-[#DFE278]"></i>
+                </div>
+                <div class="user-details flex-grow">
+                    <div class="user-name text-[#DFE278] text-sm font-medium flex items-center justify-between">
+                        <span>Berkay Derin</span>
+                        <i class="ph ph-caret-up text-sm text-[#a0aec0]"></i>
+                    </div>
+                    <div class="user-role text-[#a0aec0] text-xs mt-1">Frontend Software Engineer</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-area ml-[250px] p-8 min-h-screen bg-[#f8f9fa]">
+        <div class="profile-card max-w-[400px] bg-white rounded-2xl p-8 border border-[#e5e7eb]">
+            <div class="profile-header relative flex flex-col items-center text-center mb-8 pb-8 border-b border-[#e5e7eb]">
+                <div class="profile-avatar w-24 h-24 bg-[#DFE278] rounded-2xl flex items-center justify-center mb-6">
+                    <i class="ph ph-user-circle text-5xl text-[#2C2D1E]"></i>
+                </div>
+                <div class="profile-name text-[#1a1c23] text-2xl font-semibold mb-2 cursor-pointer flex items-center gap-2">
+                    Berkay Derin
+                    <i class="ph ph-caret-down text-xl transition-transform duration-300"></i>
+                    <div class="profile-dropdown absolute top-[calc(100%+0.5rem)] left-1/2 -translate-x-1/2 bg-white border border-[#e5e7eb] rounded-xl p-2 w-[200px] hidden z-[100]">
+                        <a href="mailto:derinberkay67@gmail.com" class="dropdown-item flex items-center p-3 text-[#1a1c23] no-underline rounded-lg transition-all duration-200 hover:bg-[#DFE278]">
+                            <i class="ph ph-envelope text-xl mr-3 min-w-5 text-center"></i>
+                            <span class="text-sm font-medium">E-posta</span>
+                        </a>
+                        <a href="tel:+905379733649" class="dropdown-item flex items-center p-3 text-[#1a1c23] no-underline rounded-lg transition-all duration-200 hover:bg-[#DFE278]">
+                            <i class="ph ph-phone text-xl mr-3 min-w-5 text-center"></i>
+                            <span class="text-sm font-medium">Telefon</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/berkayderin" target="_blank" class="dropdown-item flex items-center p-3 text-[#1a1c23] no-underline rounded-lg transition-all duration-200 hover:bg-[#DFE278]">
+                            <i class="ph ph-linkedin-logo text-xl mr-3 min-w-5 text-center"></i>
+                            <span class="text-sm font-medium">LinkedIn</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="profile-title text-[#4b5563] text-base">Frontend Software Engineer</div>
+            </div>
+            <div class="profile-links flex flex-col gap-4">
+                <div class="profile-section-title text-[#4b5563] text-sm font-semibold uppercase tracking-wider mb-4">İletişim</div>
+                <a href="https://berkayderin.com.tr/" target="_blank" class="profile-link flex items-center text-[#1a1c23] no-underline p-3 rounded-xl transition-all duration-200 bg-[#f3f4f6] hover:bg-[#DFE278] hover:-translate-y-0.5">
+                    <i class="ph ph-globe text-2xl mr-4 min-w-6 text-center"></i>
+                    <span class="text-base font-medium">berkayderin.com.tr</span>
+                </a>
+                <a href="https://github.com/berkayderin" target="_blank" class="profile-link flex items-center text-[#1a1c23] no-underline p-3 rounded-xl transition-all duration-200 bg-[#f3f4f6] hover:bg-[#DFE278] hover:-translate-y-0.5">
+                    <i class="ph ph-github-logo text-2xl mr-4 min-w-6 text-center"></i>
+                    <span class="text-base font-medium">github.com/berkayderin</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sayfa yüklendikten sonra çalışacak kodlar
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elementlerini seç
+            const toggleBtn = document.querySelector('.toggle-btn');
+            const mobileToggle = document.getElementById('mobileMenuBtn');
+            const overlay = document.querySelector('.overlay');
+            const sidebar = document.querySelector('.sidebar');
+            const contentArea = document.querySelector('.content-area');
+            const submenuItems = document.querySelectorAll('.menu-item.has-submenu');
+            const userInfo = document.querySelector('.user-info');
+            
+            console.log('Mobile toggle element:', mobileToggle);
+            
+            // Sidebar küçültme/büyütme
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('collapsed');
+                    
+                    if (contentArea) {
+                        contentArea.classList.toggle('expanded');
+                    }
+                    
+                    // İkon yönünü değiştir
+                    const icon = this.querySelector('i');
+                    if (sidebar.classList.contains('collapsed')) {
+                        icon.classList.remove('fa-chevron-left');
+                        icon.classList.add('fa-chevron-right');
+                    } else {
+                        icon.classList.remove('fa-chevron-right');
+                        icon.classList.add('fa-chevron-left');
+                    }
+                    
+                    // Alt menüleri kapat
+                    document.querySelectorAll('.submenu.active').forEach(submenu => {
+                        submenu.classList.remove('active');
+                    });
+                    document.querySelectorAll('.menu-item.has-submenu.active').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                });
+            }
+
+            // Mobil menü göster/gizle kontrolü
+            function checkMobileView() {
+                if (window.innerWidth <= 768) {
+                    if (mobileToggle) mobileToggle.style.display = 'flex';
+                    if (sidebar) sidebar.classList.remove('collapsed');
+                    if (contentArea) contentArea.classList.remove('expanded');
+                } else {
+                    if (mobileToggle) mobileToggle.style.display = 'none';
+                }
+            }
+            
+            // Sayfa yüklendiğinde ve boyutu değiştiğinde kontrol et
+            checkMobileView();
+            window.addEventListener('resize', checkMobileView);
+
+            // Mobil menü açma/kapama
+            if (mobileToggle) {
+                mobileToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                });
+            }
+
+            // Overlay tıklama
+            if (overlay) {
+                overlay.addEventListener('click', function() {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+            }
+
+            // Kullanıcı menüsü
+            if (userInfo) {
+                userInfo.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const userMenu = this.querySelector('.user-menu');
+                    if (userMenu) {
+                        userMenu.classList.toggle('active');
+                        const caretIcon = this.querySelector('.user-name i');
+                        if (caretIcon && !sidebar.classList.contains('collapsed')) {
+                            caretIcon.classList.toggle('ph-caret-up');
+                            caretIcon.classList.toggle('ph-caret-down');
+                        }
+                    }
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.user-info')) {
+                        const userMenu = document.querySelector('.user-menu');
+                        if (userMenu) {
+                            userMenu.classList.remove('active');
+                            const caretIcon = document.querySelector('.user-name i');
+                            if (caretIcon && !sidebar.classList.contains('collapsed')) {
+                                caretIcon.classList.add('ph-caret-up');
+                                caretIcon.classList.remove('ph-caret-down');
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Ekran boyutu değiştiğinde
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                }
+            });
+
+            // Alt menüler için tıklama olayı
+            submenuItems.forEach((item, index) => {
+                item.addEventListener('click', function(e) {
+                    if (!sidebar.classList.contains('collapsed')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // Diğer açık menüleri kapat
+                        document.querySelectorAll('.menu-item.has-submenu.active').forEach((activeItem, activeIndex) => {
+                            if (activeIndex !== index) {
+                                activeItem.classList.remove('active');
+                                const activeSubmenu = activeItem.nextElementSibling;
+                                if (activeSubmenu && activeSubmenu.classList.contains('submenu')) {
+                                    activeSubmenu.classList.remove('active');
+                                }
+                            }
+                        });
+
+                        // Mevcut menüyü aç/kapat
+                        this.classList.toggle('active');
+                        const submenu = this.nextElementSibling;
+                        if (submenu && submenu.classList.contains('submenu')) {
+                            submenu.classList.toggle('active');
+                        }
+                    }
+                });
+            });
+
+            // Alt menü öğelerine tıklama
+            document.querySelectorAll('.submenu .menu-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
