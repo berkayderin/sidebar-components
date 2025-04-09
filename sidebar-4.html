@@ -9,28 +9,28 @@
     <title>CRM Dashboard</title>
     <style>
       :root {
-        --crm-primary: #6366F1;
-        --crm-secondary: #F43F5E;
-        --crm-tertiary: #22D3EE;
+        --crm-primary: #004CC8;
+        --crm-secondary: #004CC8;
+        --crm-tertiary: #004CC8;
         --crm-success: #10B981;
         --crm-warning: #F59E0B;
         --crm-danger: #EF4444;
         
         --light-bg: #FFFFFF;
-        --light-sidebar: #F3F4F6;
-        --light-sidebar-hover: rgba(249, 250, 251, 0.8);
+        --light-sidebar: #FAFAFA;
+        --light-sidebar-hover: #F3F4F6;
         --light-text: #4B5563;
         --light-text-muted: #9CA3AF;
         --light-text-active: #111827;
-        --light-border: #E5E7EB;
+        --light-border: #F3F4F6;
         
-        --dark-bg: #1F2937;
-        --dark-sidebar: #111827;
-        --dark-sidebar-hover: rgba(30, 41, 59, 0.8);
+        --dark-bg: #111827;
+        --dark-sidebar: #0F172A;
+        --dark-sidebar-hover: #1E293B;
         --dark-text: #E5E7EB;
         --dark-text-muted: #9CA3AF;
         --dark-text-active: #F9FAFB;
-        --dark-border: #374151;
+        --dark-border: #1E293B;
       }
       
       .light {
@@ -58,6 +58,7 @@
         background-color: var(--bg);
         color: var(--text);
         transition: background-color 0.3s, color 0.3s;
+        font-size: 14px;
       }
       
       /* Custom scrollbar */
@@ -79,41 +80,35 @@
         transition: all 0.3s ease;
         overflow-y: auto;
         overflow-x: hidden;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
       }
       
       .sidebar-menu-item {
         position: relative;
         display: flex;
         align-items: center;
-        padding: 0.75rem 1.5rem;
-        margin: 0.4rem 0.75rem;
-        color: var(--text);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        border-radius: 16px;
-        font-weight: 500;
+        padding: 0.6rem 1.1rem;
+        margin: 0.12rem 0.45rem;
+        color: var(--text-muted);
+        transition: all 0.2s ease;
+        border-radius: 5px;
+        font-weight: 400;
         overflow: hidden;
-        border: 1px solid transparent;
-        background-color: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        border: none;
+        background-color: transparent;
+        font-size: 13px;
       }
       
       .sidebar-menu-item:hover {
         color: var(--text-active);
-        background-color: rgba(255, 255, 255, 0.08);
-        transform: translateX(3px);
-        border-color: rgba(255, 255, 255, 0.1);
+        background-color: var(--sidebar-hover);
+        transform: none;
       }
       
       .sidebar-menu-item.active {
         color: var(--crm-primary);
-        font-weight: 600;
-        background: rgba(99, 102, 241, 0.1);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
+        font-weight: 500;
+        background: transparent;
+        border: none;
       }
       
       .sidebar-menu-item.active::before {
@@ -121,83 +116,72 @@
       }
       
       .sidebar-menu-item.active .sidebar-item-title i {
-        background: linear-gradient(45deg, var(--crm-primary), var(--crm-secondary));
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        transform: scale(1.2);
+        color: var(--crm-primary);
       }
       
       .sidebar-menu-item.active::after {
-        content: "";
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: linear-gradient(45deg, var(--crm-primary), var(--crm-secondary));
+        content: none;
       }
       
       .sidebar-item-title {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 9px;
         z-index: 1;
       }
       
       .sidebar-item-title i {
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
+        color: var(--text-muted);
+        width: 16px;
+        height: 16px;
+        stroke-width: 1.5px;
       }
       
       .sidebar-menu-item:hover .sidebar-item-title i {
-        transform: scale(1.1);
+        color: var(--text-active);
+        transform: none;
       }
       
       .sidebar-submenu {
-        padding-left: 1.5rem;
+        padding-left: 1.15rem;
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.3s ease-in-out, opacity 0.3s;
-        margin-left: 0.75rem;
-        margin-right: 0.75rem;
-        opacity: 0;
+        transition: max-height 0.2s ease-in-out;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
       }
       
       .sidebar-submenu.open {
         max-height: 200px;
-        opacity: 1;
       }
       
       .sidebar-submenu-item {
         display: flex;
         align-items: center;
-        padding: 0.5rem 1rem;
+        padding: 0.35rem 0.65rem;
         color: var(--text-muted);
-        font-size: 0.85rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 12px;
+        transition: all 0.2s ease;
         position: relative;
-        border-radius: 10px;
-        margin: 0.2rem 0;
+        border-radius: 4px;
+        margin: 0.1rem 0;
         overflow: hidden;
+        border: none;
       }
       
       .sidebar-submenu-item:hover {
         color: var(--text-active);
-        background-color: rgba(255, 255, 255, 0.05);
-        padding-left: 1.2rem;
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
+        background-color: transparent;
+        padding-left: 0.85rem;
       }
       
       .sidebar-submenu-item.active {
         color: var(--crm-primary);
         font-weight: 500;
-        background: rgba(99, 102, 241, 0.08);
-        padding-left: 1.2rem;
-        border-left: none;
-        border: 1px solid rgba(99, 102, 241, 0.15);
+        background: transparent;
+        padding-left: 0.85rem;
+        border: none;
       }
       
       .sidebar-submenu-item.active::before {
@@ -205,57 +189,47 @@
       }
       
       .sidebar-submenu-item::after {
-        content: "";
-        position: absolute;
-        left: 0.5rem;
-        top: 50%;
-        transform: translateY(-50%) scale(0);
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        background-color: var(--crm-primary);
-        opacity: 0;
-        transition: all 0.2s;
+        content: none;
       }
       
       .sidebar-submenu-item:hover::after {
-        opacity: 0.6;
-        transform: translateY(-50%) scale(1);
+        content: none;
       }
       
       .sidebar-submenu-item.active::after {
         content: "";
-        opacity: 1;
-        background: linear-gradient(45deg, var(--crm-primary), var(--crm-secondary));
-        width: 4px;
-        height: 4px;
+        width: 3px;
+        height: 3px;
         position: absolute;
-        left: 0.5rem;
+        left: 0;
         top: 50%;
         transform: translateY(-50%);
         border-radius: 50%;
+        background-color: var(--crm-primary);
       }
       
       .sidebar-collapse-btn {
-        transition: transform 0.3s ease;
+        transition: transform 0.2s ease;
+        opacity: 0.6;
       }
       
       .sidebar-collapse-btn.rotated {
-        transform: rotate(180deg);
+        transform: rotate(90deg);
       }
       
       .section-title {
-        font-size: 0.7rem;
-        font-weight: 600;
+        font-size: 11px;
+        font-weight: 500;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.05em;
         color: var(--text-muted);
-        padding: 1.5rem 1.5rem 0.5rem;
+        padding: 1.1rem 1.1rem 0.3rem;
+        opacity: 0.7;
       }
       
       .notification-dot {
-        width: 8px;
-        height: 8px;
+        width: 5px;
+        height: 5px;
         border-radius: 50%;
         display: inline-block;
       }
@@ -264,28 +238,26 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-width: 22px;
-        height: 22px;
-        padding: 0 8px;
-        font-size: 10px;
-        font-weight: 600;
-        border-radius: 30px;
+        min-width: 16px;
+        height: 16px;
+        padding: 0 4px;
+        font-size: 8px;
+        font-weight: 500;
+        border-radius: 4px;
         margin-left: auto;
         transition: all 0.2s;
-        background: rgba(99, 102, 241, 0.15);
-        color: var(--crm-primary);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        border: 1px solid rgba(99, 102, 241, 0.2);
+        background-color: var(--sidebar-hover);
+        color: var(--text-muted);
+        border: none;
       }
       
       .sidebar-menu-item:hover .badge {
-        transform: scale(1.05);
+        transform: none;
       }
       
       .theme-switch {
-        width: 50px;
-        height: 24px;
+        width: 42px;
+        height: 22px;
         display: inline-block;
         position: relative;
       }
@@ -304,28 +276,36 @@
         right: 0;
         bottom: 0;
         background-color: var(--text-muted);
-        transition: .4s;
-        border-radius: 34px;
+        opacity: 0.5;
+        transition: .3s;
+        border-radius: 22px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
       }
       
       .theme-slider:before {
         position: absolute;
         content: "";
-        height: 18px;
-        width: 18px;
+        height: 16px;
+        width: 16px;
         left: 3px;
         bottom: 3px;
-        background-color: var(--bg);
-        transition: .4s;
+        background-color: white;
+        transition: .3s;
         border-radius: 50%;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
       }
       
       input:checked + .theme-slider {
         background-color: var(--crm-primary);
+        opacity: 1;
       }
       
       input:checked + .theme-slider:before {
-        transform: translateX(26px);
+        transform: translateX(20px);
+      }
+      
+      .theme-switch:focus-within .theme-slider {
+        box-shadow: 0 0 0 2px rgba(0, 76, 200, 0.2);
       }
       
       .quick-actions {
@@ -376,72 +356,197 @@
         from { max-height: 0; }
         to { max-height: 200px; }
       }
+      
+      /* Arama kutusu için özel stil */
+      .search-container {
+        position: relative;
+        margin: 0.5rem 0.75rem;
+        background-color: var(--sidebar-hover);
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        transition: all 0.2s ease;
+      }
+      
+      .search-container:focus-within {
+        border-color: var(--crm-primary);
+        box-shadow: 0 0 0 2px rgba(0, 76, 200, 0.1);
+      }
+      
+      .search-inner {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 2.5rem;
+        position: relative;
+      }
+      
+      .search-input {
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        border: none;
+        padding: 0 2.8rem 0 2.5rem;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      
+      .search-input:focus {
+        outline: none;
+      }
+      
+      .search-input::placeholder {
+        color: var(--text-muted);
+        font-size: 12px;
+        font-weight: 400;
+      }
+      
+      .search-backdrop {
+        display: none;
+      }
+      
+      .search-button {
+        position: absolute;
+        top: 50%;
+        right: 0.7rem;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.8rem;
+        height: 1.8rem;
+        border-radius: 6px;
+        background-color: var(--crm-primary);
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      
+      .search-button:hover {
+        transform: translateY(-50%) scale(1.05);
+        background-color: var(--crm-primary);
+        opacity: 0.9;
+      }
+      
+      .search-icon {
+        position: absolute;
+        top: 50%;
+        left: 0.9rem;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        transition: all 0.2s ease;
+      }
+      
+      .search-container:focus-within .search-icon {
+        color: var(--crm-primary);
+      }
+      
+      /* Kullanıcı profili ve tema düğmesi için stiller */
+      .user-profile-section {
+        border-top: 1px solid var(--border);
+        padding: 0.75rem 1rem;
+        background-color: var(--sidebar);
+      }
+      
+      .user-profile-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      
+      .theme-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .theme-icon {
+        color: var(--text-muted);
+        height: 14px;
+        width: 14px;
+        stroke-width: 2px;
+      }
     </style>
   </head>
   <body class="flex flex-col md:flex-row h-screen">
     <!-- CRM Sidebar -->
     <aside class="crm-sidebar w-64 min-h-screen flex flex-col">
       <!-- Logo ve CRM Title -->
-      <div class="p-4 flex justify-between items-center border-b border-[var(--border)]">
-        <div class="flex items-center gap-3">
-          <div class="bg-gradient-to-br from-indigo-500 to-purple-500 w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold">
-            CR
+      <div class="p-3 flex justify-between items-center border-b border-[var(--border)]">
+        <div class="flex items-center gap-2">
+          <div class="bg-[#004CC8] w-7 h-7 rounded-md flex items-center justify-center text-white font-medium text-[11px]">
+            DR
           </div>
-          <span class="font-bold text-lg text-[var(--text-active)]">NexusCRM</span>
+          <span class="font-medium text-sm text-[var(--text-active)]">DeepCRM</span>
         </div>
-        <button id="mobile-sidebar-close" class="md:hidden rounded-lg p-2 hover:bg-[var(--sidebar-hover)]">
-          <i data-feather="x" class="h-5 w-5"></i>
+        <button id="mobile-sidebar-close" class="md:hidden rounded-lg p-1.5 hover:bg-[var(--sidebar-hover)]">
+          <i data-feather="x" class="h-4 w-4"></i>
         </button>
       </div>
       
       <!-- Arama -->
-      <div class="p-4">
-        <div class="relative">
-          <input type="text" placeholder="Ara..." class="w-full text-sm rounded-lg border border-[var(--border)] bg-[var(--bg)] px-4 py-2 pl-9 focus:outline-none focus:border-[var(--crm-primary)]">
-          <i data-feather="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--text-muted)]"></i>
+      <div class="p-2">
+        <div class="search-container">
+          <div class="search-inner">
+            <i data-feather="search" class="h-4 w-4 search-icon"></i>
+            <input type="text" placeholder="Ara..." class="search-input">
+            <div class="search-backdrop"></div>
+            <button class="search-button">
+              <i data-feather="arrow-right" class="h-3.5 w-3.5"></i>
+            </button>
+          </div>
         </div>
       </div>
       
       <!-- Hızlı İşlemler -->
-      <div class="p-4 border-b border-[var(--border)]">
-        <h2 class="text-xs font-semibold mb-3 text-[var(--text-muted)]">HIZLI İŞLEMLER</h2>
+      <div class="p-2.5 border-b border-[var(--border)]">
+        <h2 class="text-[11px] font-medium mb-2 text-[var(--text-muted)]">HIZLI İŞLEMLER</h2>
         <div class="quick-actions">
           <button class="quick-action-btn">
-            <i data-feather="user-plus" class="h-5 w-5 mb-1"></i>
-            <span class="text-xs">Müşteri Ekle</span>
+            <i data-feather="user-plus" class="h-4 w-4 mb-0.5"></i>
+            <span class="text-[10px]">Müşteri</span>
           </button>
           <button class="quick-action-btn">
-            <i data-feather="phone-call" class="h-5 w-5 mb-1"></i>
-            <span class="text-xs">Görüşme</span>
+            <i data-feather="phone-call" class="h-4 w-4 mb-0.5"></i>
+            <span class="text-[10px]">Görüşme</span>
           </button>
           <button class="quick-action-btn">
-            <i data-feather="calendar" class="h-5 w-5 mb-1"></i>
-            <span class="text-xs">Toplantı</span>
+            <i data-feather="calendar" class="h-4 w-4 mb-0.5"></i>
+            <span class="text-[10px]">Toplantı</span>
           </button>
           <button class="quick-action-btn">
-            <i data-feather="clipboard" class="h-5 w-5 mb-1"></i>
-            <span class="text-xs">Yeni Görev</span>
+            <i data-feather="clipboard" class="h-4 w-4 mb-0.5"></i>
+            <span class="text-[10px]">Görev</span>
           </button>
         </div>
       </div>
       
       <!-- Ana Menü -->
-      <nav class="flex-1 overflow-y-auto py-2">
+      <nav class="flex-1 overflow-y-auto py-1">
         <div class="sidebar-menu-item active">
           <span class="sidebar-item-title">
-            <i data-feather="home" class="h-5 w-5"></i>
+            <i data-feather="home" class="h-4 w-4"></i>
             <span>Dashboard</span>
           </span>
         </div>
         
         <div class="sidebar-menu-item">
           <span class="sidebar-item-title">
-            <i data-feather="users" class="h-5 w-5"></i>
+            <i data-feather="users" class="h-4 w-4"></i>
             <span>Müşteriler</span>
           </span>
-          <div class="ml-auto flex items-center gap-2">
-            <span class="badge bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300">428</span>
-            <i data-feather="chevron-right" class="h-4 w-4 sidebar-collapse-btn"></i>
+          <div class="ml-auto flex items-center gap-1.5">
+            <span class="badge bg-[#004CC8]/10 text-[#004CC8]">428</span>
+            <i data-feather="chevron-right" class="h-3.5 w-3.5 sidebar-collapse-btn"></i>
           </div>
         </div>
         <div class="sidebar-submenu">
@@ -453,23 +558,23 @@
         
         <div class="sidebar-menu-item">
           <span class="sidebar-item-title">
-            <i data-feather="briefcase" class="h-5 w-5"></i>
-            <span>Satış Fırsatları</span>
+            <i data-feather="briefcase" class="h-4 w-4"></i>
+            <span>Fırsatlar</span>
           </span>
-          <div class="ml-auto flex items-center gap-2">
-            <span class="badge bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">16</span>
-            <i data-feather="chevron-right" class="h-4 w-4 sidebar-collapse-btn"></i>
+          <div class="ml-auto flex items-center gap-1.5">
+            <span class="badge bg-[#004CC8]/10 text-[#004CC8]">16</span>
+            <i data-feather="chevron-right" class="h-3.5 w-3.5 sidebar-collapse-btn"></i>
           </div>
         </div>
         <div class="sidebar-submenu">
           <a href="#" class="sidebar-submenu-item">Tüm Fırsatlar</a>
-          <a href="#" class="sidebar-submenu-item">Kazanılan Fırsatlar</a>
-          <a href="#" class="sidebar-submenu-item">Kaybedilen Fırsatlar</a>
+          <a href="#" class="sidebar-submenu-item">Kazanılan</a>
+          <a href="#" class="sidebar-submenu-item">Kaybedilen</a>
         </div>
         
         <div class="sidebar-menu-item">
           <span class="sidebar-item-title">
-            <i data-feather="mail" class="h-5 w-5"></i>
+            <i data-feather="mail" class="h-4 w-4"></i>
             <span>İletişim</span>
           </span>
           <div class="ml-auto flex items-center">
@@ -479,24 +584,21 @@
         
         <div class="sidebar-menu-item">
           <span class="sidebar-item-title">
-            <i data-feather="calendar" class="h-5 w-5"></i>
+            <i data-feather="calendar" class="h-4 w-4"></i>
             <span>Takvim</span>
           </span>
-          <div class="ml-auto flex items-center gap-2">
-            <span class="badge bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300">8</span>
-          </div>
         </div>
         
         <div class="sidebar-menu-item">
           <span class="sidebar-item-title">
-            <i data-feather="check-square" class="h-5 w-5"></i>
+            <i data-feather="check-square" class="h-4 w-4"></i>
             <span>Görevler</span>
           </span>
         </div>
         
         <div class="sidebar-menu-item">
           <span class="sidebar-item-title">
-            <i data-feather="file-text" class="h-5 w-5"></i>
+            <i data-feather="file-text" class="h-4 w-4"></i>
             <span>Dokümanlar</span>
           </span>
         </div>
@@ -505,14 +607,14 @@
         
         <div class="sidebar-menu-item">
           <span class="sidebar-item-title">
-            <i data-feather="bar-chart-2" class="h-5 w-5"></i>
-            <span>Satış Raporu</span>
+            <i data-feather="bar-chart-2" class="h-4 w-4"></i>
+            <span>Satış</span>
           </span>
         </div>
         
         <div class="sidebar-menu-item">
           <span class="sidebar-item-title">
-            <i data-feather="trending-up" class="h-5 w-5"></i>
+            <i data-feather="trending-up" class="h-4 w-4"></i>
             <span>Performans</span>
           </span>
         </div>
@@ -521,37 +623,41 @@
         
         <div class="sidebar-menu-item">
           <span class="sidebar-item-title">
-            <i data-feather="user" class="h-5 w-5"></i>
-            <span>Profilim</span>
+            <i data-feather="user" class="h-4 w-4"></i>
+            <span>Profil</span>
           </span>
         </div>
         
         <div class="sidebar-menu-item">
           <span class="sidebar-item-title">
-            <i data-feather="settings" class="h-5 w-5"></i>
+            <i data-feather="settings" class="h-4 w-4"></i>
             <span>Ayarlar</span>
           </span>
         </div>
       </nav>
       
       <!-- Alt Kısım - Kullanıcı ve Tema -->
-      <div class="p-4 border-t border-[var(--border)]">
-        <div class="flex justify-between items-center">
-          <div class="flex items-center">
+      <div class="user-profile-section">
+        <div class="user-profile-container">
+          <div class="user-info">
             <div class="relative">
               <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="user-avatar">
               <span class="status-indicator"></span>
             </div>
-            <div class="ml-3">
-              <p class="text-sm font-medium">Ali Yılmaz</p>
-              <p class="text-xs text-[var(--text-muted)]">Satış Müdürü</p>
+            <div>
+              <p class="text-xs font-medium">Berkay Derin</p>
+              <p class="text-[10px] text-[var(--text-muted)]">Satış Müdürü</p>
             </div>
           </div>
           
-          <label class="theme-switch">
-            <input type="checkbox" id="theme-toggle">
-            <span class="theme-slider"></span>
-          </label>
+          <div class="theme-controls">
+            <i data-feather="moon" class="theme-icon"></i>
+            <label class="theme-switch">
+              <input type="checkbox" id="theme-toggle">
+              <span class="theme-slider"></span>
+            </label>
+            <i data-feather="sun" class="theme-icon"></i>
+          </div>
         </div>
       </div>
     </aside>
@@ -559,13 +665,13 @@
     <!-- Mobile Header and Background Overlay -->
     <div class="md:hidden fixed top-0 left-0 right-0 z-30 bg-[var(--bg)] border-b border-[var(--border)] px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="bg-gradient-to-br from-indigo-500 to-purple-500 w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold">
-          CR
+        <div class="bg-[#004CC8] w-7 h-7 rounded-md flex items-center justify-center text-white font-medium text-[11px]">
+          DR
         </div>
-        <span class="font-bold text-lg text-[var(--text-active)]">NexusCRM</span>
+        <span class="font-medium text-sm text-[var(--text-active)]">DeepCRM</span>
       </div>
-      <button id="mobile-sidebar-open" class="rounded-lg p-2 hover:bg-[var(--sidebar-hover)]">
-        <i data-feather="menu" class="h-5 w-5"></i>
+      <button id="mobile-sidebar-open" class="rounded-lg p-1.5 hover:bg-[var(--sidebar-hover)]">
+        <i data-feather="menu" class="h-4 w-4"></i>
       </button>
     </div>
     
@@ -581,7 +687,11 @@
     <!-- Scripts -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        feather.replace();
+        feather.replace({
+          'stroke-width': 1.5,
+          'width': 16,
+          'height': 16
+        });
         
         // Theme toggle functionality
         const themeToggle = document.getElementById('theme-toggle');
